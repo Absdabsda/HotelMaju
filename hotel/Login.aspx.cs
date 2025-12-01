@@ -31,18 +31,26 @@ namespace hotel
                 using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + DBpath + ";Version = 3;"))
                 {
                     conn.Open();
-                    string query = "SELECT profile FROM credentials WHERE name =" + name.Text + "AND password =" + password.Text;
+                    string query = "SELECT profile FROM Users " +
+                                   "WHERE username = '" + username.Text + "' " +
+                                   "AND password = '" + password.Text + "'";
                     using (SQLiteCommand comm = new SQLiteCommand(query, conn))
                     {
                         SQLiteDataReader reader = comm.ExecuteReader();
-                        DataTable dt = new DataTable();
-                        dt.Load(reader);
 
-                        foreach (DataRow dr in dt.Rows)
+                        if (reader.Read())
                         {
-                            string role = dr["name"].ToString().ToLower();
+                            string profile = reader["profile"].ToString();
 
-                            
+                            // Guardamos datos en sesión por si hacen falta en otras páginas
+                            Session["username"] = username.Text;
+                            Session["profile"] = profile;
+
+                            Response.Redirect("ClientPage.aspx");
+                        }
+                        else
+                        {
+                            Label1.Text = "Usuario o contraseña incorrectos.";
                         }
                     }
                 }

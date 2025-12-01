@@ -12,7 +12,7 @@
         <div style="height: 109px">
             <h1>Login</h1>
             <asp:Label ID="Label1" runat="server" Text="Username: "></asp:Label>
-            <asp:TextBox ID="name" runat="server" OnTextChanged="username_TextChanged"></asp:TextBox>
+            <asp:TextBox ID="username" runat="server" OnTextChanged="username_TextChanged"></asp:TextBox>
             <asp:Label ID="Label2" runat="server" Text="Password: "></asp:Label>
             <asp:TextBox ID="password" runat="server" TextMode="Password" OnTextChanged="password_TextChanged"></asp:TextBox>
             <asp:Button ID="Button1" runat="server" Text="Enter" OnClick="Button1_Click" />
