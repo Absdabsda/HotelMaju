@@ -10,7 +10,10 @@
 <body>
     <form id="form1" runat="server">
         <div>
+<<<<<<< HEAD
             <h1>Holaaa</h1>
+=======
+>>>>>>> origin/main
         </div>
     </form>
 </body>
