@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RecepcionistPage.aspx.cs" Inherits="hotel.RecepcionistPage" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ReceptionistPage.aspx.cs" Inherits="hotel.RecepcionistPage" %>
 
 <!DOCTYPE html>
 
@@ -10,6 +10,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            <h1>Hola soy recepcionista</h1>
         </div>
     </form>
 </body>

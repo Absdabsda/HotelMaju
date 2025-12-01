@@ -46,7 +46,19 @@ namespace hotel
                             Session["username"] = username.Text;
                             Session["profile"] = profile;
 
-                            Response.Redirect("ClientPage.aspx");
+                            // ⭐ Redirección según el tipo de perfil
+                            if (profile == "receptionist")
+                            {
+                                Response.Redirect("ReceptionistPage.aspx");
+                            }
+                            else if (profile == "client")
+                            {
+                                Response.Redirect("ClientPage.aspx");
+                            }
+                            else
+                            {
+                                Label1.Text = "Perfil desconocido.";
+                            }
                         }
                         else
                         {
