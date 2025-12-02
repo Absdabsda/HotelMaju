@@ -7,7 +7,7 @@ html, body {
 
 /* Fondo beige */
 body {
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: "Segoe UI", sans-serif;
     background: linear-gradient( 135deg, 
                                         #f3f1eb 0%,
                                         #e4e8e3 40%, 

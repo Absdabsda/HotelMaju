@@ -9,6 +9,9 @@
 <body>
     <form id="form1" runat="server">
     <div class="page-wrapper">
+
+        <asp:Button ID="btnLogout" runat="server"  Text="Logout" CssClass="btn btn-primary" OnClick="btnLogout_Click" />
+
         <h1 class="page-title">Panel de Recepción</h1>
 
         <!-- CLIENTES -->

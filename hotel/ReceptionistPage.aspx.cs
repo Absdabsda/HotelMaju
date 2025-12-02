@@ -16,11 +16,14 @@ namespace hotel
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Si no hay sesión → fuera
+            if (Session["username"] == null)
+                Response.Redirect("Login.aspx");
+
             if (!IsPostBack)
-            {
                 LoadUsersDropDown();
-            }
         }
+
 
         // =======================
         //   CLIENTES
@@ -130,7 +133,7 @@ namespace hotel
 
             if (string.IsNullOrWhiteSpace(txtClientID.Text))
             {
-                lblClientMsg.Text = "Enter the customer identification number you want to update\r\n.";
+                lblClientMsg.Text = "Introduce el número identificativo del cliente que quieres actualizar.";
                 return;
             }
 
@@ -140,6 +143,7 @@ namespace hotel
                 {
                     conn.Open();
 
+                    // IMPORTANTE: clientID tiene que ser un número entero existente
                     string query = "UPDATE Users SET " +
                                    "username = '" + txtName.Text + "', " +
                                    "DOB = '" + txtDOB.Text + "', " +
@@ -149,25 +153,27 @@ namespace hotel
 
                     using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                     {
-                        int rows = cmd.ExecuteNonQuery();
+                        int rows = cmd.ExecuteNonQuery();   // cuántas filas ha tocado
 
                         if (rows > 0)
                         {
-                            lblClientMsg.Text = "Client updated.";
+                            lblClientMsg.Text = "Cliente actualizado correctamente. (" + rows + " fila/s)";
                             LoadUsersDropDown();
                         }
                         else
                         {
-                            lblClientMsg.Text = "No customer was found with that identifier.";
+                            lblClientMsg.Text = "No se ha encontrado ningún cliente con ese identificativo (no se actualizó nada).";
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                lblClientMsg.Text = "Error updating client.";
+                // TEMPORALMENTE, para ver el error real:
+                lblClientMsg.Text = "Error al actualizar cliente: " + ex.Message;
             }
         }
+
 
         protected void btnDeleteClient_Click(object sender, EventArgs e)
         {
@@ -175,7 +181,7 @@ namespace hotel
 
             if (string.IsNullOrWhiteSpace(txtClientID.Text))
             {
-                lblClientMsg.Text = "Enter the customer identification number you want to delete.";
+                lblClientMsg.Text = "Introduce el número identificativo del cliente que quieres eliminar.";
                 return;
             }
 
@@ -193,7 +199,7 @@ namespace hotel
 
                         if (rows > 0)
                         {
-                            lblClientMsg.Text = "Client deleted.";
+                            lblClientMsg.Text = "Cliente eliminado correctamente. (" + rows + " fila/s)";
                             txtName.Text = "";
                             txtDOB.Text = "";
                             txtAddress.Text = "";
@@ -202,16 +208,17 @@ namespace hotel
                         }
                         else
                         {
-                            lblClientMsg.Text = "No customer was found with that identifier.";
+                            lblClientMsg.Text = "No se ha encontrado ningún cliente con ese identificativo (no se eliminó nada).";
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                lblClientMsg.Text = "Error deleting a client.";
+                lblClientMsg.Text = "Error al eliminar cliente: " + ex.Message;
             }
         }
+
 
         // =======================
         //   RESERVAS
@@ -398,5 +405,15 @@ namespace hotel
                 lblReservationMsg.Text = "Error deleting reservation.";
             }
         }
+
+
+        protected void btnLogout_Click(object sender, EventArgs e)
+        {
+            Session.Clear();      // borra todas las variables de sesión
+            Session.Abandon();    // invalida la sesión actual
+
+            Response.Redirect("Login.aspx");
+        }
+
     }
 }
