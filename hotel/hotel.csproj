@@ -75,6 +75,7 @@
     <Content Include="ReceptionistPage.aspx">
       <BrowseToURL>~/ReceptionistPage.aspx</BrowseToURL>
     </Content>
+    <Content Include="Styles\ClientPage.css" />
     <Content Include="Styles\Login.css" />
     <Content Include="Styles\Receptionist.css" />
     <Content Include="Web.config" />
