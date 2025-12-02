@@ -9,25 +9,35 @@
 
 <body>
     <form id="form1" runat="server">
-        <div style="text-align:right; margin: 10px;">
-    <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="logout-btn" OnClick="btnLogout_Click" />
-</div>
 
+        <asp:Panel ID="header" runat="server" CssClass="header">
+            <span class="header-logo">MaJu Hotel</span>
+
+            <asp:Button ID="btnLogout" runat="server"
+                        Text="Logout"
+                        CssClass="logout-btn"
+                        OnClick="btnLogout_Click" />
+        </asp:Panel>
 
         <div class="container">
 
-            <h2>Welcome!</h2>
+            <h2>Your Information</h2>
 
-            <div class="info-box">
-                <asp:Label ID="lblName" runat="server"></asp:Label><br />
-                <asp:Label ID="lblID" runat="server"></asp:Label><br />
-                <asp:Label ID="lblDOB" runat="server"></asp:Label><br />
-                <asp:Label ID="lblAddress" runat="server"></asp:Label><br />
-                <asp:Label ID="lblMobile" runat="server"></asp:Label><br />
+            <div class="info-card">
+                <h3>Personal Details</h3>
+                <p><strong>Name:</strong> <asp:Label ID="lblName" runat="server" /></p>
+                <p><strong>ID:</strong> <asp:Label ID="lblID" runat="server" /></p>
+                <p><strong>Date of Birth:</strong> <asp:Label ID="lblDOB" runat="server" /></p>
+                <p><strong>Address:</strong> <asp:Label ID="lblAddress" runat="server" /></p>
+                <p><strong>Mobile:</strong> <asp:Label ID="lblMobile" runat="server" /></p>
             </div>
 
             <h2>Your Reservations</h2>
-            <asp:GridView ID="gvReservations" runat="server" CssClass="reservations-table"></asp:GridView>
+
+            <div class="info-card">
+                <h3>Reservations</h3>
+                <asp:GridView ID="gvReservations" runat="server" CssClass="reservations-table"></asp:GridView>
+            </div>
 
         </div>
 
