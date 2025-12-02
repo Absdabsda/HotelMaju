@@ -4,55 +4,119 @@
 <html>
 <head runat="server">
     <title>Receptionist - Hotel Maju</title>
-    <link href="Styles/login.css" rel="stylesheet" />
+    <link href="Styles/Receptionist.css" rel="stylesheet" />
 </head>
 <body>
     <form id="form1" runat="server">
+    <div class="page-wrapper">
+        <h1 class="page-title">Panel de Recepción</h1>
+
+        <!-- CLIENTES -->
         <div class="panel">
-            <h2>Gestión de clientes</h2>
+            <h2>Clientes</h2>
 
-            <div class="field">
-                <label>UserID:</label>
-                <asp:TextBox ID="txtUserID" runat="server" ReadOnly="true"></asp:TextBox>
-                <span style="font-size:12px;color:gray;">(se rellena al seleccionar un cliente)</span>
+            <div class="panel-fields">
+                <div class="form-field">
+                    <label>Número identificativo</label>
+                    <asp:TextBox ID="txtClientID" runat="server" />
+                </div>
+
+                <div class="form-field">
+                    <label>Nombre</label>
+                    <asp:TextBox ID="txtName" runat="server" />
+                </div>
+
+                <div class="form-field">
+                    <label>Fecha de nacimiento</label>
+                    <asp:TextBox ID="txtDOB" runat="server" TextMode="Date" />
+                </div>
+
+                <div class="form-field">
+                    <label>Dirección</label>
+                    <asp:TextBox ID="txtAddress" runat="server" />
+                </div>
+
+                <div class="form-field">
+                    <label>Teléfono</label>
+                    <asp:TextBox ID="txtMobile" runat="server" />
+                </div>
             </div>
 
-            <div class="field">
-                <label>Username:</label>
-                <asp:TextBox ID="txtUsername" runat="server"></asp:TextBox>
+            <asp:Button ID="btnAddClient" runat="server"
+                Text="Crear cliente" CssClass="btn btn-primary"
+                OnClick="btnAddClient_Click" />
+
+            <asp:Button ID="btnUpdateClient" runat="server"
+                Text="Actualizar cliente" CssClass="btn btn-primary"
+                OnClick="btnUpdateClient_Click" />
+
+            <asp:Button ID="btnDeleteClient" runat="server"
+                Text="Eliminar cliente" CssClass="btn btn-primary"
+                OnClick="btnDeleteClient_Click" />
+
+            <asp:Button ID="btnFindClient" runat="server"
+                Text="Buscar cliente" CssClass="btn btn-primary"
+                OnClick="btnFindClient_Click" />
+
+            <asp:Label ID="lblClientMsg" runat="server" CssClass="status-label" />
+        </div>
+
+        <hr class="section-divider" />
+
+        <!-- RESERVAS -->
+        <div class="panel">
+            <h2>Reservas</h2>
+
+            <div class="panel-fields">
+                <div class="form-field">
+                    <label>Cliente</label>
+                    <asp:DropDownList ID="ddlUsers" runat="server" />
+                </div>
+
+                <div class="form-field">
+                    <label>Fecha de llegada</label>
+                    <asp:TextBox ID="txtArrival" runat="server" TextMode="Date" />
+                </div>
+
+                <div class="form-field">
+                    <label>Fecha de ida</label>
+                    <asp:TextBox ID="txtDeparture" runat="server" TextMode="Date" />
+                </div>
+
+                <div class="form-field">
+                    <label>Tipo de habitación</label>
+                    <asp:DropDownList ID="ddlRoomType" runat="server">
+                        <asp:ListItem>Individual</asp:ListItem>
+                        <asp:ListItem>Doble</asp:ListItem>
+                        <asp:ListItem>Suite</asp:ListItem>
+                    </asp:DropDownList>
+                </div>
+
+                <div class="form-field">
+                    <label>Número de habitación (opcional)</label>
+                    <asp:TextBox ID="txtRoomID" runat="server" />
+                </div>
             </div>
 
-            <div class="field">
-                <label>Password:</label>
-                <asp:TextBox ID="txtPassword" runat="server"></asp:TextBox>
-            </div>
+            <asp:Button ID="btnAddReservation" runat="server"
+                Text="Crear reserva" CssClass="btn btn-primary"
+                OnClick="btnAddReservation_Click" />
 
-            <div class="field">
-                <label>DOB:</label>
-                <asp:TextBox ID="txtDOB" runat="server" Placeholder="YYYY-MM-DD"></asp:TextBox>
-            </div>
+            <asp:Button ID="btnUpdateReservation" runat="server"
+                Text="Actualizar reserva" CssClass="btn btn-primary"
+                OnClick="btnUpdateReservation_Click" />
 
-            <div class="field">
-                <label>Address:</label>
-                <asp:TextBox ID="txtAddress" runat="server"></asp:TextBox>
-            </div>
+            <asp:Button ID="btnDeleteReservation" runat="server"
+                Text="Eliminar reserva" CssClass="btn btn-primary"
+                OnClick="btnDeleteReservation_Click" />
 
-            <div class="field">
-                <label>Mobile:</label>
-                <asp:TextBox ID="txtMobile" runat="server"></asp:TextBox>
-            </div>
+            <asp:Button ID="btnFindReservation" runat="server"
+                Text="Buscar reserva" CssClass="btn btn-primary"
+                OnClick="btnFindReservation_Click" />
 
-            <div class="field">
-                <label>Buscar:</label>
-                <asp:TextBox ID="txtSearch" runat="server" Placeholder="nombre o móvil"></asp:TextBox>
-                <asp:Button ID="btnSearchClient" runat="server" Text="Buscar" CssClass="btn" OnClick="btnSearchClient_Click" />
-            </div>
-
-            <asp:Button ID="btnCreateClient" runat="server" Text="Crear cliente" CssClass="btn" OnClick="btnCreateClient_Click" />
-            <asp:Button ID="btnUpdateClient" runat="server" Text="Actualizar cliente" CssClass="btn" OnClick="btnUpdateClient_Click" />
-            <asp:Button ID="btnDeleteClient" runat="server" Text="Eliminar cliente" CssClass="btn" OnClick="btnDeleteClient_Click" />
-
-            <br /><br />
-            <asp:Label ID="lblClientMsg" runat="server" ForeColor="Red"></asp:Label>
-
-            <a
+            <asp:Label ID="lblReservationMsg" runat="server" CssClass="status-label" />
+        </div>
+    </div>
+</form>
+</body>
+</html>

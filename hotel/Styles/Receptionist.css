@@ -1,130 +1,134 @@
-﻿.panel {
-    background: #ffffffdd;
-    padding: 20px;
-    margin: 10px auto;
-    border-radius: 10px;
-    width: 800px;
-}
+﻿/* ===== ESTRUCTURA GENERAL ===== */
 
-h2 {
-    margin-top: 0;
-}
-
-.field {
-    margin-bottom: 8px;
-}
-
-    .field label {
-        display: inline-block;
-        width: 120px;
-    }
-
-    .field input {
-        padding: 5px;
-        width: 200px;
-    }
-
-.btn {
-    margin-right: 10px;
-    padding: 6px 12px;
-}
-
-.grid {
-    margin-top: 10px;
-    width: 100%;
-}
-
-/*-----------------------------------------------------------------------------------------*/
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
-/* Fondo general */
 body {
     font-family: "Segoe UI", Arial, sans-serif;
-    background: linear-gradient(135deg, #4b79a1, #283e51);
-    margin: 0;
-    height: 100vh;
+    background: linear-gradient( 135deg, #f3f1eb 0%, #e4e8e3 40%, #d6dfd7 75%, #cdd7cf 100% );
+}
+
+/* Centramos contenido principal pero con algo de margen superior */
+.page-wrapper {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px 40px 20px;
+}
+
+/* Título principal */
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #35423a;
+    margin-bottom: 24px;
+}
+
+/* ===== TARJETAS/PANELES ===== */
+
+.panel {
+    background: #fffdf9;
+    border-radius: 18px;
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    border: 1px solid #e1d6c3;
+}
+
+    .panel h2 {
+        margin: 0 0 16px 0;
+        font-size: 20px;
+        color: #35423a;
+    }
+
+/* Layout de campos: dos columnas en pantallas grandes */
+
+.panel-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px 24px;
+    margin-bottom: 16px;
+}
+
+.form-field {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    font-size: 14px;
+    color: #4a4a3f;
 }
 
-/* Contenedor del login */
-.login-container {
-    background: #ffffffcc;
-    padding: 40px 50px;
-    border-radius: 15px;
-    width: 350px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    backdrop-filter: blur(5px);
-    animation: fadeIn 0.6s ease-out;
-}
-
-/* Animación suave */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+    .form-field label {
+        margin-bottom: 4px;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* Inputs / selects */
 
-/* Título */
-.login-container h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #222;
-}
-
-/* Inputs */
-.login-container input[type="text"],
-.login-container input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 18px;
-    border: 1px solid #bbb;
-    border-radius: 8px;
-    font-size: 15px;
+.panel input[type="text"],
+.panel input[type="date"],
+.panel select {
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid #d8c9b3;
+    background-color: #f9f4eb;
+    font-size: 14px;
     outline: none;
     transition: 0.2s;
 }
 
-    .login-container input[type="text"]:focus,
-    .login-container input[type="password"]:focus {
-        border-color: #4b79a1;
-        box-shadow: 0 0 5px rgba(75,121,161,0.4);
+    .panel input[type="text"]:focus,
+    .panel input[type="date"]:focus,
+    .panel select:focus {
+        border-color: #8aa089;
+        box-shadow: 0 0 0 3px rgba(138, 160, 137, 0.25);
+        background-color: #fffaf3;
     }
 
-/* Botón */
-.login-container .btn-login {
-    width: 100%;
-    padding: 12px;
-    background-color: #4b79a1;
+/* ===== BOTONES ===== */
+
+.btn {
+    display: inline-block;
+    margin-right: 8px;
+    margin-top: 6px;
+    padding: 8px 14px;
+    border-radius: 999px;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
 }
 
-    .login-container .btn-login:hover {
-        background-color: #3a6588;
+/* todos los asp:Button con CssClass="btn" cogen este estilo base,
+   pero les damos color principal con otra clase si quieres */
+
+.btn-primary {
+    background-color: #8aa089;
+    color: #fffdf8;
+}
+
+    .btn-primary:hover {
+        background-color: #788d77;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+        transform: translateY(-1px);
     }
 
-/* Mensaje de error */
-.error-label {
-    color: #a80000;
-    font-weight: bold;
-    margin-top: 10px;
+/* Mensajes de estado */
+
+.status-label {
     display: block;
-    text-align: center;
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6b4b3b;
+}
+
+/* Un poquito de espacio entre secciones */
+
+.section-divider {
+    height: 1px;
+    border: none;
+    margin: 24px 0;
+    background: rgba(0,0,0,0.06);
 }

@@ -8,9 +8,12 @@ html, body {
 /* Fondo beige */
 body {
     font-family: "Segoe UI", Arial, sans-serif;
-    background: 
-        linear-gradient(0deg, rgba(0,0,0,0.25), rgba(0,0,0,0.25)), 
-        url('../Images/hotel.webp') center/cover no-repeat fixed;
+    background: linear-gradient( 135deg, 
+                                        #f3f1eb 0%,
+                                        #e4e8e3 40%, 
+                                        #d6dfd7 75%,
+                                        #cdd7cf 100% 
+    );
 }
 
 form {
