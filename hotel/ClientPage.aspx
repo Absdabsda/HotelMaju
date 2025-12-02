@@ -1,17 +1,23 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ClientPage.aspx.cs" Inherits="hotel.WebForm1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ClientPage.aspx.cs" Inherits="hotel.ClientPage" %>
 
 <!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head runat="server">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Client Page</title>
 </head>
 <body>
-    <form id="form1" runat="server">
-        <div>
-            <h1>Holaaa soy cliente</h1>
-        </div>
-    </form>
+<form id="form1" runat="server">
+
+    <h2>Your Information</h2>
+    <asp:Label ID="lblName" runat="server" /><br />
+    <asp:Label ID="lblID" runat="server" /><br />
+    <asp:Label ID="lblDOB" runat="server" /><br />
+    <asp:Label ID="lblAddress" runat="server" /><br />
+    <asp:Label ID="lblMobile" runat="server" /><br />
+
+    <h2>Your Reservations</h2>
+    <asp:GridView ID="gvReservations" runat="server" AutoGenerateColumns="true"></asp:GridView>
+
+</form>
 </body>
 </html>
