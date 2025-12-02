@@ -16,8 +16,10 @@ namespace hotel
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Si no hay sesión → fuera
             if (Session["username"] == null)
+                Response.Redirect("Login.aspx");
+
+            if (Session["profile"] == null || Session["profile"].ToString() != "receptionist")
                 Response.Redirect("Login.aspx");
 
             if (!IsPostBack)

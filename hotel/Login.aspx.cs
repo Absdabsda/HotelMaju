@@ -24,54 +24,55 @@ namespace hotel
 
         protected void Button1_Click(object sender, EventArgs e)
         {
+            Label1.Text = "";
+            string nextPage = null;
+
             try
             {
-                // Conexión con la BBDD
                 string DBpath = Server.MapPath("~/hotel.db");
-                using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + DBpath + ";Version = 3;"))
+
+                using (SQLiteConnection conn = new SQLiteConnection("Data Source=" + DBpath + ";Version=3;BusyTimeout=5000;"))
                 {
                     conn.Open();
+
                     string query = "SELECT profile FROM Users " +
                                    "WHERE username = '" + username.Text + "' " +
                                    "AND password = '" + password.Text + "'";
-                    using (SQLiteCommand comm = new SQLiteCommand(query, conn))
-                    {
-                        SQLiteDataReader reader = comm.ExecuteReader();
 
+                    using (SQLiteCommand comm = new SQLiteCommand(query, conn))
+                    using (SQLiteDataReader reader = comm.ExecuteReader())
+                    {
                         if (reader.Read())
                         {
                             string profile = reader["profile"].ToString();
 
-                            // Guardamos datos en sesión por si hacen falta en otras páginas
                             Session["username"] = username.Text;
                             Session["profile"] = profile;
 
-                            // ⭐ Redirección según el tipo de perfil
                             if (profile == "receptionist")
-                            {
-                                Response.Redirect("ReceptionistPage.aspx");
-                            }
+                                nextPage = "ReceptionistPage.aspx";
                             else if (profile == "client")
-                            {
-                                Response.Redirect("ClientPage.aspx");
-                            }
+                                nextPage = "ClientPage.aspx";
                             else
-                            {
                                 Label1.Text = "Unknown profile";
-                            }
                         }
                         else
                         {
                             Label1.Text = "Wrong username or password";
                         }
-                    }
-                }
+                    } // reader cerrado AQUÍ
+                }     // conexión cerrada AQUÍ
             }
-            catch (Exception ex)
+            catch
             {
                 Label1.Text = "Could not login";
             }
+
+            // Redirección SOLO después de cerrar la conexión
+            if (nextPage != null)
+                Response.Redirect(nextPage, false);
         }
+
 
         protected void password_TextChanged(object sender, EventArgs e)
         {
