@@ -1,93 +1,108 @@
-﻿html, body {
+﻿/* Estructura base */
+html, body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
-/* Fondo general */
+/* Fondo beige */
 body {
     font-family: "Segoe UI", Arial, sans-serif;
-    background: linear-gradient(135deg, #4b79a1, #283e51);
-    margin: 0;
-    height: 100vh;
+    background: 
+        linear-gradient(0deg, rgba(0,0,0,0.25), rgba(0,0,0,0.25)), 
+        url('../Images/hotel.webp') center/cover no-repeat fixed;
+}
+
+form {
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 /* Contenedor del login */
 .login-container {
-    background: #ffffffcc;
-    padding: 40px 50px;
-    border-radius: 15px;
-    width: 350px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    backdrop-filter: blur(5px);
-    animation: fadeIn 0.6s ease-out;
+    background: #fffdf9;
+    padding: 32px 40px;
+    border-radius: 18px;
+    width: 400px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+    border: 1px solid #e1d6c3;
+    box-sizing: border-box;
 }
 
-/* Animación suave */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
+    /* Que todo dentro del contenedor respete el ancho */
+    .login-container * {
+        box-sizing: border-box;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Título */
-.login-container h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #222;
-}
-
-/* Inputs */
-.login-container input[type="text"],
-.login-container input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 18px;
-    border: 1px solid #bbb;
-    border-radius: 8px;
-    font-size: 15px;
-    outline: none;
-    transition: 0.2s;
-}
-
-    .login-container input[type="text"]:focus,
-    .login-container input[type="password"]:focus {
-        border-color: #4b79a1;
-        box-shadow: 0 0 5px rgba(75,121,161,0.4);
+    /* Título */
+    .login-container h2 {
+        text-align: center;
+        margin: 0 0 16px 0;
+        color: #35423a;
+        font-size: 24px;
+        font-weight: 700;
     }
 
-/* Botón */
-.login-container .btn-login {
-    width: 100%;
-    padding: 12px;
-    background-color: #4b79a1;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-    .login-container .btn-login:hover {
-        background-color: #3a6588;
+    /* Inputs (text y password) */
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+        display: block;
+        width: 100%;
+        padding: 10px 12px;
+        margin-top: 4px;
+        margin-bottom: 14px;
+        border: 1px solid #d8c9b3;
+        border-radius: 10px;
+        font-size: 14px;
+        outline: none;
+        background-color: #f9f4eb;
+        transition: 0.2s;
     }
+
+        .login-container input[type="text"]::placeholder,
+        .login-container input[type="password"]::placeholder {
+            color: #a89478;
+        }
+
+        .login-container input[type="text"]:focus,
+        .login-container input[type="password"]:focus {
+            border-color: #8aa089;
+            box-shadow: 0 0 0 3px rgba(138, 160, 137, 0.25);
+            background-color: #fffaf3;
+        }
+
+    /* Botón */
+    .login-container .btn-login {
+        display: block;
+        width: 100%; 
+        padding: 11px;
+        background-color: #8aa089;
+        border: none;
+        border-radius: 999px;
+        font-size: 15px;
+        font-weight: 600;
+        color: #fffdf8;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: 4px;
+    }
+
+        .login-container .btn-login:hover {
+            background-color: #788d77;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+        }
 
 /* Mensaje de error */
 .error-label {
-    color: #a80000;
-    font-weight: bold;
+    color: #b5493c;
+    font-weight: 600;
     margin-top: 10px;
     display: block;
     text-align: center;
+    font-size: 13px;
 }

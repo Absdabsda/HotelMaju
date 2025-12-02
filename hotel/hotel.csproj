@@ -76,6 +76,7 @@
       <BrowseToURL>~/ReceptionistPage.aspx</BrowseToURL>
     </Content>
     <Content Include="Styles\Login.css" />
+    <Content Include="Styles\Receptionist.css" />
     <Content Include="Web.config" />
     <Content Include="ClientPage.aspx" />
   </ItemGroup>
@@ -111,6 +112,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\hotel.webp" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
