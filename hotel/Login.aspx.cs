@@ -57,12 +57,12 @@ namespace hotel
                             }
                             else
                             {
-                                Label1.Text = "Perfil desconocido.";
+                                Label1.Text = "Unknown profile";
                             }
                         }
                         else
                         {
-                            Label1.Text = "Usuario o contraseña incorrectos.";
+                            Label1.Text = "Wrong username or password";
                         }
                     }
                 }
