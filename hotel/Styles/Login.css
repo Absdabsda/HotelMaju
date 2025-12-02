@@ -1,4 +1,4 @@
-﻿/* Estructura base */
+/* Estructura base */
 html, body {
     height: 100%;
     margin: 0;
@@ -8,13 +8,14 @@ html, body {
 /* Fondo beige */
 body {
     font-family: "Segoe UI", Arial, sans-serif;
-    background: linear-gradient( 135deg, 
-                                        #f3f1eb 0%,
-                                        #e4e8e3 40%, 
-                                        #d6dfd7 75%,
-                                        #cdd7cf 100% 
-    );
+    background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('../Img/castle.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
+
+
 
 form {
     min-height: 100vh;
@@ -23,6 +24,48 @@ form {
     align-items: center;
     margin: 0;
     padding: 0;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: #6F8F72;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 95%;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+.logo {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    flex-wrap: nowrap;
+}
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+.login-btn {
+    padding: 6px 14px;
+    background-color: white;
+    color: #4B5C52 !important;
+    border-radius: 5px;
 }
 
 /* Contenedor del login */
@@ -108,4 +151,15 @@ form {
     display: block;
     text-align: center;
     font-size: 13px;
+}
+
+.footer {
+    background-color: #4B5C52;
+    text-align: center;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }

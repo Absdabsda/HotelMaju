@@ -72,6 +72,7 @@
   <ItemGroup>
     <Content Include="Img\bed.jpg" />
     <Content Include="Img\cama.jpg" />
+    <Content Include="Img\castle.jpeg" />
     <Content Include="Img\deluxe.jpg" />
     <Content Include="Img\familia.jpg" />
     <Content Include="Img\gato.jpg" />

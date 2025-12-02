@@ -12,20 +12,15 @@
     <form id="form1" runat="server">
 
         <asp:Panel ID="navbar" runat="server" CssClass="navbar">
-    <asp:Label ID="lblLogo" runat="server" Text="MaJu Hotel" CssClass="logo"></asp:Label>
-
-    <ul class="nav-links">
-        <li><asp:HyperLink runat="server" NavigateUrl="~/LandingPage.aspx" Text="Home" /></li>
-        <li><a href="#rooms">Rooms</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#location">Location</a></li>
-
-        <li>
-            <asp:HyperLink runat="server" CssClass="login-btn"
-                           NavigateUrl="~/Login.aspx" Text="Login" />
-        </li>
-    </ul>
-</asp:Panel>
+        <asp:Label ID="lblLogo" runat="server" Text="MaJu Hotel" CssClass="logo"></asp:Label>
+            <ul class="nav-links">
+                <li><asp:HyperLink runat="server" NavigateUrl="~/LandingPage.aspx" Text="Home" /></li>
+                <li><a href="#rooms">Rooms</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#location">Location</a></li>
+                <li><asp:HyperLink runat="server" CssClass="login-btn" NavigateUrl="~/Login.aspx" Text="Login" /></li>
+            </ul>
+        </asp:Panel>
 
 
         <asp:Panel ID="hero" runat="server" CssClass="hero-panel">
