@@ -1,0 +1,265 @@
+﻿body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    color: #4B5C52;
+    background-color: #F7EFE5;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: #6F8F72;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 95%;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+
+.logo {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    flex-wrap: nowrap;
+}
+
+    .nav-links a {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+.login-btn {
+    padding: 6px 14px;
+    background-color: white;
+    color: #4B5C52 !important;
+    border-radius: 5px;
+}
+
+/* HERO */
+.hero-panel {
+    position: relative;
+    margin-top: 80px;
+}
+
+.hero-img {
+    width: 100%;
+    height: 65vh;
+    object-fit: cover;
+}
+
+.hero-text {
+    position: absolute;
+    top: 45%;
+    left: 8%; /* TEXTO A LA IZQUIERDA */
+    transform: translateY(-50%);
+    color: white; /* LETRAS BLANCAS */
+    text-align: left; /* ALINEADO A LA IZQUIERDA */
+    background: none; /* SIN PANEL */
+    padding: 0;
+    max-width: 500px; /* OPCIONAL – controla el ancho */
+}
+
+    .hero-text h1 {
+        font-size: 48px;
+        font-weight: bold;
+        margin: 0;
+        color: white;
+        text-shadow: 2px 2px 8px rgba(0,0,0,0.5); /* MEJOR LEGIBILIDAD */
+    }
+
+    .hero-text p {
+        font-size: 20px;
+        margin-top: 10px;
+        margin-bottom: 25px;
+        color: white;
+        text-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+    }
+
+.cta-btn {
+    background-color: #6F8F72;
+    padding: 12px 26px;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 18px;
+    display: inline-block;
+}
+
+
+/* INFO SECTION */
+.info-section {
+    padding: 50px 80px;
+}
+
+.info-cards, .rooms-cards {
+    display: flex;
+    gap: 30px;
+    margin-top: 25px;
+}
+
+.info-card, .room-card {
+    width: 32%;
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.card-img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* GALLERY */
+.gallery {
+    padding: 50px 80px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.gallery-img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* FOOTER */
+.footer {
+    background-color: #4B5C52;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .info-cards, .rooms-cards {
+        flex-direction: column;
+    }
+
+    .info-card, .room-card {
+        width: 100%;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+h2 {
+    text-align: center;
+    font-size: 32px;
+    color: #4B5C52;
+    letter-spacing: 1px;
+    margin-bottom: 30px;
+}
+
+.location-section {
+    padding: 50px 80px;
+    text-align: center;
+}
+
+.map-container {
+    width: 100%;
+    height: auto;
+    margin: 30px 0;
+}
+
+.map-text {
+    font-size: 18px;
+    color: #4B5C52;
+    margin-top: 15px;
+}
+
+/* SHOWCASE CAROUSEL (MEJORADO) */
+.showcase-carousel {
+    position: relative;
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    padding: 40px 0;
+}
+
+.showcase-track {
+    display: flex;
+    transition: transform 0.6s ease-in-out;
+}
+
+.showcase-card {
+    flex: 0 0 33.33%; /* una tarjeta ocupa exactamente un tercio */
+    padding: 0 20px; /* el hueco reemplaza al gap */
+    box-sizing: border-box;
+    background: white;
+    border-radius: 18px;
+    opacity: 0.45;
+    transform: scale(0.85);
+    transition: all 0.35s ease;
+}
+
+    .showcase-card.active {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+
+/* IMÁGENES */
+.showcase-img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+/* FLECHAS */
+.showcase-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #6F8F72;
+    border: none;
+    padding: 12px 17px;
+    color: white;
+    font-size: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0.95;
+    transition: 0.2s ease;
+    z-index: 10;
+}
+
+    .showcase-btn:hover {
+        background: #58725C;
+    }
+
+    /* Flechas más cerca */
+    .showcase-btn.left {
+        left: 10px;
+    }
+
+    .showcase-btn.right {
+        right: 10px;
+    }
+
+/* Responsive */
+@media (max-width: 1000px) {
+    .showcase-card {
+        width: 80%;
+        margin: auto;
+    }
+}
+

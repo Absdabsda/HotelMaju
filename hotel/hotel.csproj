@@ -70,12 +70,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Img\bed.jpg" />
+    <Content Include="Img\cama.jpg" />
+    <Content Include="Img\deluxe.jpg" />
+    <Content Include="Img\familia.jpg" />
+    <Content Include="Img\gato.jpg" />
+    <Content Include="Img\lounge-planta.jpg" />
+    <Content Include="Img\nature.jpg" />
+    <Content Include="Img\small-bed.jpg" />
+    <Content Include="Img\suite.jpg" />
     <Content Include="LandingPage.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="ReceptionistPage.aspx">
       <BrowseToURL>~/ReceptionistPage.aspx</BrowseToURL>
     </Content>
     <Content Include="Styles\ClientPage.css" />
+    <Content Include="Styles\Landing.css" />
     <Content Include="Styles\Login.css" />
     <Content Include="Styles\Receptionist.css" />
     <Content Include="Web.config" />
