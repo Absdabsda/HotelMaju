@@ -3,17 +3,55 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', sans-serif;
-    background-color: #F8F3E7;
     color: #5C4033;
+    /* Fondo difuminado leaves.jpg */
+    background: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('../Img/leaves.jpg') center/cover fixed no-repeat;
 }
+
+
+.header {
+    background-color: #6F8F72;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 95%;
+    right: 0;
+    margin: 0 auto;
+    z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.header-logo {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.logout-btn {
+    padding: 6px 14px;
+    background-color: white;
+    color: #4B5C52 !important;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+    .logout-btn:hover {
+        background-color: #ececec;
+    }
+
 
 .container {
     max-width: 900px;
-    margin: 40px auto;
-    background: #FFFFFF;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin: 160px auto 40px auto; 
+    padding: 0 20px;
 }
 
 h2 {
@@ -24,15 +62,26 @@ h2 {
     margin-top: 30px;
 }
 
-.info-box {
-    background: #E7D9CC;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 10px;
+.info-card {
+    background: rgba(255,255,255,0.75);
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-top: 20px;
+    border: 1px solid #E7D9CC;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    backdrop-filter: blur(6px);
 }
 
-    .info-box p {
-        margin: 10px 0;
+    .info-card h3 {
+        margin: 0 0 12px 0;
+        color: #5C4033;
+        font-size: 20px;
+        border-bottom: 2px solid #A17C6B;
+        padding-bottom: 6px;
+    }
+
+    .info-card p {
+        margin: 8px 0;
         font-size: 16px;
     }
 
@@ -40,7 +89,6 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
-    background-color: white;
 }
 
     table th {
@@ -57,24 +105,9 @@ table {
         border-bottom: 1px solid #E7D9CC;
     }
 
-
 @media (max-width: 600px) {
     .container {
-        margin: 20px;
+        margin-top: 180px;
         padding: 20px;
     }
 }
-
-.logout-btn {
-    background-color: #A17C6B;
-    color: white;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-    .logout-btn:hover {
-        background-color: #8f6d5e;
-    }
-
