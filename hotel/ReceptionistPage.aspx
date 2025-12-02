@@ -8,12 +8,22 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <div class="page-wrapper">
+    
+        <!-- HEADER -->
+<asp:Panel ID="navbar" runat="server" CssClass="navbar">
+    <div class="navbar-content">
+        <asp:Label ID="lblLogo" runat="server" Text="MaJu Hotel" CssClass="logo"></asp:Label>
 
-        <asp:Button ID="btnLogout" runat="server"  Text="Logout" CssClass="btn btn-primary" OnClick="btnLogout_Click" />
+        <asp:Button ID="btnLogout" 
+                    runat="server" 
+                    Text="Logout" 
+                    CssClass="logout-btn" 
+                    OnClick="btnLogout_Click" />
+    </div>
+</asp:Panel>
 
-        <h1 class="page-title">Panel de Recepción</h1>
 
+<div class="page-wrapper">
         <!-- CLIENTES -->
         <div class="panel">
             <h2>Clientes</h2>
