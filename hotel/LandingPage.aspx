@@ -12,15 +12,23 @@
     <form id="form1" runat="server">
 
         <asp:Panel ID="navbar" runat="server" CssClass="navbar">
-        <asp:Label ID="lblLogo" runat="server" Text="MaJu Hotel" CssClass="logo"></asp:Label>
-            <ul class="nav-links">
-                <li><asp:HyperLink runat="server" NavigateUrl="~/LandingPage.aspx" Text="Home" /></li>
-                <li><a href="#rooms">Rooms</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#location">Location</a></li>
-                <li><asp:HyperLink runat="server" CssClass="login-btn" NavigateUrl="~/Login.aspx" Text="Login" /></li>
-            </ul>
-        </asp:Panel>
+
+    <asp:Label ID="lblLogo" runat="server" Text="MaJu Hotel" CssClass="logo"></asp:Label>
+
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+
+    <div class="nav-links-container">
+        <ul class="nav-links">
+            <li><asp:HyperLink runat="server" NavigateUrl="~/LandingPage.aspx" Text="Home" /></li>
+            <li><a href="#rooms">Rooms</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#location">Location</a></li>
+            <li><asp:HyperLink runat="server" CssClass="login-btn" NavigateUrl="~/Login.aspx" Text="Login" /></li>
+        </ul>
+    </div>
+
+</asp:Panel>
+
 
 
         <asp:Panel ID="hero" runat="server" CssClass="hero-panel">
@@ -63,44 +71,38 @@
             </div>
         </section>
 
-        <section id="rooms" class="rooms-section">
+        <section id="rooms" class="rooms-alt-section">
+
     <h2>Our Rooms</h2>
 
-    <div class="showcase-carousel">
-
-        <button class="showcase-btn left" type="button" onclick="moveShowcase(-1)">❮</button>
-
-        <div class="showcase-track" id="showcase">
-            
-            <!-- Room 1 -->
-            <div class="showcase-card">
-                <img src="Img/bed.jpg" class="showcase-img" />
-                <h3>Standard Room</h3>
-                <p>Cozy double room with private bathroom and garden views.</p>
-            </div>
-
-            <!-- Room 2 -->
-            <div class="showcase-card">
-                <img src="Img/suite.jpg" class="showcase-img" />
-                <h3>Family Suite</h3>
-                <p>Spacious suite with 2 rooms, ideal for families.</p>
-            </div>
-
-            <!-- Room 3 -->
-            <div class="showcase-card">
-                <img src="Img/deluxe.jpg" class="showcase-img" />
-                <h3>Eco Deluxe</h3>
-                <p>Natural materials, soft lighting, and calming atmosphere.</p>
-            </div>
-
+    <!-- ROOM 1 -->
+    <div class="room-block">
+        <img src="Img/bed.jpg" class="room-img" />
+        <div class="room-info">
+            <h3>Standard Room</h3>
+            <p>Cozy double room with private bathroom and garden views.</p>
         </div>
-
-        <button class="showcase-btn right" type="button" onclick="moveShowcase(1)">❯</button>
-
     </div>
+
+    <!-- ROOM 2 (invertido) -->
+    <div class="room-block reverse">
+        <img src="Img/suite.jpg" class="room-img" />
+        <div class="room-info">
+            <h3>Family Suite</h3>
+            <p>Perfect for families — two rooms, plenty of space and comfort.</p>
+        </div>
+    </div>
+
+    <!-- ROOM 3 -->
+    <div class="room-block">
+        <img src="Img/deluxe.jpg" class="room-img" />
+        <div class="room-info">
+            <h3>Eco Deluxe</h3>
+            <p>Soft lighting, natural wood and a relaxing environment.</p>
+        </div>
+    </div>
+
 </section>
-
-
 
         <section id="location" class="location-section">
     <h2>Our Location</h2>
@@ -123,48 +125,16 @@
     </p>
 </section>
 
-
         <footer class="footer">
             <p>© 2025 MaJu Hotel — All Rights Reserved</p>
             <p>Contact: info@majuhotel.com · +34 600 123 456</p>
         </footer>
 
         <script>
-            let pos = 1; // Empezamos centrando la tarjeta 2
-
-            function updateShowcase() {
-                const track = document.getElementById("showcase");
-                const items = track.children;
-                const total = items.length;
-
-                // Quitar activas
-                for (let i = 0; i < total; i++) {
-                    items[i].classList.remove("active");
-                }
-
-                // Activar la tarjeta correcta
-                const index = (pos + total) % total;
-                items[index].classList.add("active");
-
-                // Mover el track para centrar la tarjeta activa
-                const shift = -(pos * 33.33);
-                track.style.transform = `translateX(${shift}%)`;
+            function toggleMenu() {
+                document.querySelector(".nav-links-container").classList.toggle("open");
             }
-
-            function moveShowcase(step) {
-                const track = document.getElementById("showcase");
-                const total = track.children.length;
-
-                pos = (pos + step + total) % total;
-
-                updateShowcase();
-            }
-
-            document.addEventListener("DOMContentLoaded", updateShowcase);
-
         </script>
-
-
 
     </form>
 
