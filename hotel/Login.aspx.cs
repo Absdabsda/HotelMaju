@@ -60,15 +60,14 @@ namespace hotel
                         {
                             Label1.Text = "Wrong username or password";
                         }
-                    } // reader cerrado AQUÍ
-                }     // conexión cerrada AQUÍ
+                    } 
+                }     
             }
             catch
             {
                 Label1.Text = "Could not login";
             }
 
-            // Redirección SOLO después de cerrar la conexión
             if (nextPage != null)
                 Response.Redirect(nextPage, false);
         }
