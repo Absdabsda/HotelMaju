@@ -1,19 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System;
 
 namespace hotel.Models
 {
-    public class Reservation
+    internal class Reservation
     {
-        public int ReservationID { get; set; }   // PK de Reservations
-        public int UserID { get; set; }
-        public string ArrivalDate { get; set; }      // texto tipo "2025-12-03"
-        public string DepartureDate { get; set; }
-        public string RoomType { get; set; }         // Individual / Doble / Suite
+        // ===== Fields =====
+        private int reservationID;
+        private int userID;
+        private string arrivalDate;
+        private string departureDate;
+        private string roomType;
 
-        // Si en tu tabla tienes RoomID más adelante, lo usas:
-        public int? RoomID { get; set; }
+        // ===== Properties =====
+        public int ReservationID
+        {
+            get { return reservationID; }
+            set { reservationID = value; }
+        }
+
+        public int UserID
+        {
+            get { return userID; }
+            set { userID = value; }
+        }
+
+        public string ArrivalDate
+        {
+            get { return arrivalDate; }
+            set { arrivalDate = value; }
+        }
+
+        public string DepartureDate
+        {
+            get { return departureDate; }
+            set { departureDate = value; }
+        }
+
+        public string RoomType
+        {
+            get { return roomType; }
+            set { roomType = value; }
+        }
+
+        // ===== Constructor =====
+        public Reservation() { }
+        public Reservation(int reservationID, int userID, string arrivalDate, string departureDate, string roomType)
+        {
+            ReservationID = reservationID;
+            UserID = userID;
+            ArrivalDate = arrivalDate;
+            DepartureDate = departureDate;
+            RoomType = roomType;
+        }
+
+        // ===== Optional Utility Methods =====
+        public string GetReservationInfo()
+        {
+            return
+                $"RESERVATION INFO:\n" +
+                $"Reservation ID: {ReservationID}\n" +
+                $"User ID: {UserID}\n" +
+                $"Room Type: {RoomType}\n" +
+                $"Arrival: {ArrivalDate}\n" +
+                $"Departure: {DepartureDate}\n";
+        }
     }
 }

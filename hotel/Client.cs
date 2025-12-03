@@ -1,19 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace hotel.Models
 {
-    public class Client
+    internal class Client
     {
-        public int ClientID { get; set; }   // tu número identificativo
-        public string Name { get; set; }    // Users.username
-        public string DOB { get; set; }     // lo manejas como texto (yyyy-MM-dd)
-        public string Address { get; set; }
-        public string Mobile { get; set; }
+        // ===== Fields =====
+        private int clientID;
+        private string name;
+        private string dob;
+        private string address;
+        private string mobile;
+        private int userID;
 
-        // Opcional: si quieres mapear también el userID de la tabla:
-        public int? UserID { get; set; }
+        // ===== Properties =====
+        public int ClientID
+        {
+            get { return clientID; }
+            set { clientID = value; }
+        }
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public string DOB
+        {
+            get { return dob; }
+            set { dob = value; }
+        }
+
+        public string Address
+        {
+            get { return address; }
+            set { address = value; }
+        }
+
+        public string Mobile
+        {
+            get { return mobile; }
+            set { mobile = value; }
+        }
+
+        public int UserID
+        {
+            get { return userID; }
+            set { userID = value; }
+        }
+
+        // ===== Constructor =====
+        public Client() { }
+        public Client(int clientID, string name, string dob, string address, string mobile, int userID)
+        {
+            ClientID = clientID;
+            Name = name;
+            DOB = dob;
+            Address = address;
+            Mobile = mobile;
+            UserID = userID;
+        }
+
+        // ===== Methods =====
+        public string GetClientInfo()
+        {
+            return
+                $"CLIENT INFO:\n" +
+                $"ID: {ClientID}\n" +
+                $"Name: {Name}\n" +
+                $"DOB: {DOB}\n" +
+                $"Address: {Address}\n" +
+                $"Mobile: {Mobile}\n" +
+                $"UserID: {UserID}";
+        }
     }
 }

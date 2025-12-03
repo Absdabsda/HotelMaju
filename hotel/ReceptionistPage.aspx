@@ -68,9 +68,10 @@
                               OnSelectedIndexChanged="gvClients_SelectedIndexChanged">
 
                     <Columns>
-                        <asp:BoundField DataField="userID" HeaderText="ID" />
-                        <asp:BoundField DataField="username" HeaderText="Name" />
-                        <asp:BoundField DataField="mobile" HeaderText="Phone" />
+                        <asp:BoundField DataField="UserID" HeaderText="Internal ID" />
+                        <asp:BoundField DataField="ClientID" HeaderText="Client ID" />
+                        <asp:BoundField DataField="Name" HeaderText="Name" />
+                        <asp:BoundField DataField="Mobile" HeaderText="Phone" />
                         <asp:CommandField ShowSelectButton="True" SelectText="Select" />
                     </Columns>
                 </asp:GridView>
@@ -121,11 +122,6 @@
                 </div>
 
                 <div class="button-row">
-                    <asp:Button ID="btnFindClient" runat="server"
-                                Text="Search"
-                                CssClass="btn btn-primary"
-                                OnClick="btnFindClient_Click" />
-
                     <asp:Button ID="btnAddClient" runat="server"
                                 Text="Create"
                                 CssClass="btn btn-primary"
@@ -193,10 +189,10 @@
                               OnSelectedIndexChanged="gvReservations_SelectedIndexChanged">
 
                     <Columns>
-                        <asp:BoundField DataField="reservationID" HeaderText="ID" />
-                        <asp:BoundField DataField="arrivalDate" HeaderText="Arrival" />
-                        <asp:BoundField DataField="departureDate" HeaderText="Departure" />
-                        <asp:BoundField DataField="roomType" HeaderText="Room Type" />
+                        <asp:BoundField DataField="ReservationID" HeaderText="ID" />
+                        <asp:BoundField DataField="ArrivalDate" HeaderText="Arrival" />
+                        <asp:BoundField DataField="DepartureDate" HeaderText="Departure" />
+                        <asp:BoundField DataField="RoomType" HeaderText="Room Type" />
                         <asp:CommandField ShowSelectButton="True" SelectText="Select" />
                     </Columns>
                 </asp:GridView>

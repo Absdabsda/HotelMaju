@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using hotel.Models;
 
 namespace hotel
 {
@@ -12,14 +14,16 @@ namespace hotel
         //              CONEXIÓN A LA BASE DE DATOS
         // =========================================================
 
-        /// <summary>
-        /// Construye el connection string para el SQLite del hotel.
-        /// BusyTimeout ayuda a evitar errores de "database is locked".
-        /// </summary>
         private string GetConnectionString()
         {
             string dbPath = Server.MapPath("~/hotel.db");
             return "Data Source=" + dbPath + ";Version=3;BusyTimeout=5000;";
+        }
+
+        // Pequeño helper para que las comillas no rompan el SQL
+        private string Escape(string value)
+        {
+            return (value ?? "").Replace("'", "''");
         }
 
         // =========================================================
@@ -47,9 +51,6 @@ namespace hotel
         //                      CLIENTES - CRUD
         // =========================================================
 
-        /// <summary>
-        /// Crea un nuevo cliente en la tabla Users.
-        /// </summary>
         protected void btnAddClient_Click(object sender, EventArgs e)
         {
             lblClientMsg.Text = "";
@@ -60,23 +61,38 @@ namespace hotel
                 return;
             }
 
+            // Creamos el objeto Client a partir de los campos
+            Client client = new Client
+            {
+                ClientID = clientID,
+                Name = txtName.Text.Trim(),
+                DOB = txtDOB.Text,
+                Address = txtAddress.Text.Trim(),
+                Mobile = txtMobile.Text.Trim()
+            };
+
+            // Sanitizamos strings para el SQL
+            string name = Escape(client.Name);
+            string dob = Escape(client.DOB);
+            string address = Escape(client.Address);
+            string mobile = Escape(client.Mobile);
+
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
                 {
                     conn.Open();
 
-                    string query = @"INSERT INTO Users (clientID, username, DOB, address, mobile)
-                                     VALUES (@clientID, @username, @dob, @address, @mobile)";
+                    string query =
+                        "INSERT INTO Users (clientID, username, DOB, address, mobile) VALUES (" +
+                        client.ClientID + ", '" +
+                        name + "', '" +
+                        dob + "', '" +
+                        address + "', '" +
+                        mobile + "')";
 
                     using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@clientID", clientID);
-                        cmd.Parameters.AddWithValue("@username", txtName.Text.Trim());
-                        cmd.Parameters.AddWithValue("@dob", txtDOB.Text);
-                        cmd.Parameters.AddWithValue("@address", txtAddress.Text.Trim());
-                        cmd.Parameters.AddWithValue("@mobile", txtMobile.Text.Trim());
-
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -89,9 +105,6 @@ namespace hotel
             }
         }
 
-        /// <summary>
-        /// Botón Search dentro del panel de client info (busca por ClientID).
-        /// </summary>
         protected void btnFindClient_Click(object sender, EventArgs e)
         {
             lblClientMsg.Text = "";
@@ -106,51 +119,62 @@ namespace hotel
         }
 
         /// <summary>
-        /// Carga los datos de un cliente (UserID/ClientID) en los TextBox.
+        /// Carga los datos de un cliente en un objeto Client y rellena el formulario.
+        /// También carga las reservas del cliente.
         /// </summary>
         private void LoadClientData(int clientID)
         {
+            Client client = null;
+
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
                 {
                     conn.Open();
 
-                    string query = @"SELECT userID, clientID, username, DOB, address, mobile
-                                     FROM Users
-                                     WHERE clientID = @clientID";
+                    string query =
+                        "SELECT userID, clientID, username, DOB, address, mobile " +
+                        "FROM Users " +
+                        "WHERE clientID = " + clientID;
 
                     using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
-                        cmd.Parameters.AddWithValue("@clientID", clientID);
-
-                        using (SQLiteDataReader reader = cmd.ExecuteReader())
+                        if (reader.Read())
                         {
-                            if (reader.Read())
+                            client = new Client
                             {
-                                // Rellenamos datos
-                                txtClientID.Text = reader["clientID"].ToString();
-                                txtName.Text = reader["username"].ToString();
-                                txtDOB.Text = reader["DOB"].ToString();
-                                txtAddress.Text = reader["address"].ToString();
-                                txtMobile.Text = reader["mobile"].ToString();
-
-                                // Guardamos el userID interno (PK) como cliente seleccionado
-                                int userID = Convert.ToInt32(reader["userID"]);
-                                ViewState["selectedUserID"] = userID;
-
-                                lblSelectedClient.Text = $"Selected client: {reader["username"]} (ID {reader["clientID"]})";
-                                lblClientMsg.Text = "Client found.";
-
-                                // Cargamos sus reservas
-                                LoadReservationsForClient(userID);
-                            }
-                            else
-                            {
-                                lblClientMsg.Text = "No client found with that ID.";
-                            }
+                                UserID = Convert.ToInt32(reader["userID"]),
+                                ClientID = Convert.ToInt32(reader["clientID"]),
+                                Name = reader["username"].ToString(),
+                                DOB = reader["DOB"].ToString(),
+                                Address = reader["address"].ToString(),
+                                Mobile = reader["mobile"].ToString()
+                            };
                         }
                     }
+                }
+
+                if (client != null)
+                {
+                    // Rellenamos los TextBox con la clase
+                    txtClientID.Text = client.ClientID.ToString();
+                    txtName.Text = client.Name;
+                    txtDOB.Text = client.DOB;
+                    txtAddress.Text = client.Address;
+                    txtMobile.Text = client.Mobile;
+
+                    ViewState["selectedUserID"] = client.UserID;
+
+                    lblSelectedClient.Text = $"Selected client: {client.Name} (ID {client.ClientID})";
+                    lblClientMsg.Text = "Client found.";
+
+                    // Cargamos sus reservas
+                    LoadReservationsForClient(client.UserID);
+                }
+                else
+                {
+                    lblClientMsg.Text = "No client found with that ID.";
                 }
             }
             catch (Exception)
@@ -159,9 +183,6 @@ namespace hotel
             }
         }
 
-        /// <summary>
-        /// Actualiza los datos de un cliente existente.
-        /// </summary>
         protected void btnUpdateClient_Click(object sender, EventArgs e)
         {
             lblClientMsg.Text = "";
@@ -172,27 +193,36 @@ namespace hotel
                 return;
             }
 
+            Client client = new Client
+            {
+                ClientID = clientID,
+                Name = txtName.Text.Trim(),
+                DOB = txtDOB.Text,
+                Address = txtAddress.Text.Trim(),
+                Mobile = txtMobile.Text.Trim()
+            };
+
+            string name = Escape(client.Name);
+            string dob = Escape(client.DOB);
+            string address = Escape(client.Address);
+            string mobile = Escape(client.Mobile);
+
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
                 {
                     conn.Open();
 
-                    string query = @"UPDATE Users SET
-                                        username = @username,
-                                        DOB      = @dob,
-                                        address  = @address,
-                                        mobile   = @mobile
-                                     WHERE clientID = @clientID";
+                    string query =
+                        "UPDATE Users SET " +
+                        "username = '" + name + "', " +
+                        "DOB = '" + dob + "', " +
+                        "address = '" + address + "', " +
+                        "mobile = '" + mobile + "' " +
+                        "WHERE clientID = " + client.ClientID;
 
                     using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@username", txtName.Text.Trim());
-                        cmd.Parameters.AddWithValue("@dob", txtDOB.Text);
-                        cmd.Parameters.AddWithValue("@address", txtAddress.Text.Trim());
-                        cmd.Parameters.AddWithValue("@mobile", txtMobile.Text.Trim());
-                        cmd.Parameters.AddWithValue("@clientID", clientID);
-
                         int rows = cmd.ExecuteNonQuery();
 
                         if (rows > 0)
@@ -208,9 +238,6 @@ namespace hotel
             }
         }
 
-        /// <summary>
-        /// Elimina un cliente por ClientID.
-        /// </summary>
         protected void btnDeleteClient_Click(object sender, EventArgs e)
         {
             lblClientMsg.Text = "";
@@ -221,18 +248,22 @@ namespace hotel
                 return;
             }
 
+            // Creamos un objeto client solo con el ID (por estilo)
+            Client client = new Client
+            {
+                ClientID = clientID
+            };
+
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
                 {
                     conn.Open();
 
-                    string query = @"DELETE FROM Users WHERE clientID = @clientID";
+                    string query = "DELETE FROM Users WHERE clientID = " + client.ClientID;
 
                     using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@clientID", clientID);
-
                         int rows = cmd.ExecuteNonQuery();
 
                         if (rows > 0)
@@ -264,10 +295,6 @@ namespace hotel
         //           BUSCADOR Y SELECCIÓN DE CLIENTES (PANEL 1)
         // =========================================================
 
-        /// <summary>
-        /// Busca clientes por nombre o clientID (panel "Search client")
-        /// y los muestra en gvClients.
-        /// </summary>
         protected void btnSearchClient_Click(object sender, EventArgs e)
         {
             lblSearchMsg.Text = "";
@@ -288,33 +315,46 @@ namespace hotel
                 return;
             }
 
+            string safeSearch = Escape(search);
+
             try
             {
+                List<Client> clients = new List<Client>();
+
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
                 {
                     conn.Open();
 
-                    string query = @"
-                        SELECT userID, username, mobile
-                        FROM Users
-                        WHERE username LIKE @search
-                           OR CAST(clientID AS TEXT) LIKE @search
-                        ORDER BY username";
+                    string query =
+                        "SELECT userID, clientID, username, DOB, address, mobile " +
+                        "FROM Users " +
+                        "WHERE username LIKE '%" + safeSearch + "%' " +
+                        "   OR CAST(clientID AS TEXT) LIKE '%" + safeSearch + "%' " +
+                        "ORDER BY username";
 
-                    using (SQLiteDataAdapter da = new SQLiteDataAdapter(query, conn))
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
-                        da.SelectCommand.Parameters.AddWithValue("@search", "%" + search + "%");
-
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-
-                        gvClients.DataSource = dt;
-                        gvClients.DataBind();
-
-                        if (dt.Rows.Count == 0)
-                            lblSearchMsg.Text = "No clients found with that search.";
+                        while (reader.Read())
+                        {
+                            clients.Add(new Client
+                            {
+                                UserID = Convert.ToInt32(reader["userID"]),
+                                ClientID = Convert.ToInt32(reader["clientID"]),
+                                Name = reader["username"].ToString(),
+                                DOB = reader["DOB"].ToString(),
+                                Address = reader["address"].ToString(),
+                                Mobile = reader["mobile"].ToString()
+                            });
+                        }
                     }
                 }
+
+                gvClients.DataSource = clients;
+                gvClients.DataBind();
+
+                if (clients.Count == 0)
+                    lblSearchMsg.Text = "No clients found with that search.";
             }
             catch (Exception)
             {
@@ -322,12 +362,6 @@ namespace hotel
             }
         }
 
-        /// <summary>
-        /// Cuando seleccionas un cliente en gvClients:
-        ///  - Guardamos su userID en ViewState.
-        ///  - Cargamos sus datos en el panel de Client info.
-        ///  - Cargamos sus reservas.
-        /// </summary>
         protected void gvClients_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (gvClients.SelectedRow == null)
@@ -335,43 +369,49 @@ namespace hotel
 
             GridViewRow row = gvClients.SelectedRow;
 
-            // Columnas del GridView: 0=userID, 1=username, 2=mobile
+            // Asumimos que la primera columna es userID y la segunda es Name
             int userID = int.Parse(row.Cells[0].Text);
             string username = row.Cells[1].Text;
 
-            ViewState["selectedUserID"] = userID;
+            // Creamos objeto Client mínimamente con lo que sabemos
+            Client client = new Client
+            {
+                UserID = userID,
+                Name = username
+            };
 
-            // Actualizamos etiqueta de cliente seleccionado (ID visible será el clientID que está en la tabla Users)
-            lblSelectedClient.Text = $"Selected client: {username} (internal ID {userID})";
+            ViewState["selectedUserID"] = client.UserID;
+            lblSelectedClient.Text = $"Selected client: {client.Name} (internal ID {client.UserID})";
 
-            // Cargamos datos del cliente a partir de clientID asociado
-            // Primero obtenemos su clientID a partir del userID
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
                 {
                     conn.Open();
 
-                    string query = @"SELECT clientID FROM Users WHERE userID = @userID";
+                    string query =
+                        "SELECT clientID " +
+                        "FROM Users " +
+                        "WHERE userID = " + client.UserID;
 
                     using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@userID", userID);
-
                         object result = cmd.ExecuteScalar();
                         if (result != null)
                         {
                             int clientID = Convert.ToInt32(result);
-                            // Esto rellena el panel de cliente y también carga reservas
-                            LoadClientData(clientID);
+                            LoadClientData(clientID); // carga panel cliente + reservas
+                        }
+                        else
+                        {
+                            LoadReservationsForClient(client.UserID);
                         }
                     }
                 }
             }
             catch (Exception)
             {
-                // Si falla, al menos cargamos reservas con el userID
-                LoadReservationsForClient(userID);
+                LoadReservationsForClient(client.UserID);
             }
         }
 
@@ -379,9 +419,6 @@ namespace hotel
         //                      RESERVAS - CRUD
         // =========================================================
 
-        /// <summary>
-        /// Carga en el GridView todas las reservas de un cliente (userID).
-        /// </summary>
         private void LoadReservationsForClient(int userID)
         {
             gvReservations.DataSource = null;
@@ -390,31 +427,42 @@ namespace hotel
 
             try
             {
+                List<Reservation> reservations = new List<Reservation>();
+
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
                 {
                     conn.Open();
 
-                    string query = @"SELECT reservationID, arrivalDate, departureDate, roomType
-                                     FROM Reservations
-                                     WHERE userID = @userID
-                                     ORDER BY arrivalDate";
+                    string query =
+                        "SELECT reservationID, userID, arrivalDate, departureDate, roomType " +
+                        "FROM Reservations " +
+                        "WHERE userID = " + userID +
+                        " ORDER BY arrivalDate";
 
-                    using (SQLiteDataAdapter da = new SQLiteDataAdapter(query, conn))
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
-                        da.SelectCommand.Parameters.AddWithValue("@userID", userID);
-
-                        DataTable dt = new DataTable();
-                        da.Fill(dt);
-
-                        gvReservations.DataSource = dt;
-                        gvReservations.DataBind();
-
-                        if (dt.Rows.Count == 0)
-                            lblReservationMsg.Text = "This client has no reservations yet.";
-                        else
-                            lblReservationMsg.Text = $"Loaded {dt.Rows.Count} reservations.";
+                        while (reader.Read())
+                        {
+                            reservations.Add(new Reservation
+                            {
+                                ReservationID = Convert.ToInt32(reader["reservationID"]),
+                                UserID = Convert.ToInt32(reader["userID"]),
+                                ArrivalDate = reader["arrivalDate"].ToString(),
+                                DepartureDate = reader["departureDate"].ToString(),
+                                RoomType = reader["roomType"].ToString()
+                            });
+                        }
                     }
                 }
+
+                gvReservations.DataSource = reservations;
+                gvReservations.DataBind();
+
+                if (reservations.Count == 0)
+                    lblReservationMsg.Text = "This client has no reservations yet.";
+                else
+                    lblReservationMsg.Text = $"Loaded {reservations.Count} reservations.";
             }
             catch (Exception)
             {
@@ -422,9 +470,6 @@ namespace hotel
             }
         }
 
-        /// <summary>
-        /// Crea una nueva reserva para el cliente seleccionado (ViewState["selectedUserID"]).
-        /// </summary>
         protected void btnAddReservation_Click(object sender, EventArgs e)
         {
             lblReservationMsg.Text = "";
@@ -444,22 +489,33 @@ namespace hotel
                 return;
             }
 
+            Reservation res = new Reservation
+            {
+                UserID = userID,
+                ArrivalDate = txtArrival.Text,
+                DepartureDate = txtDeparture.Text,
+                RoomType = ddlRoomType.SelectedValue
+            };
+
+            string arrival = Escape(res.ArrivalDate);
+            string departure = Escape(res.DepartureDate);
+            string roomType = Escape(res.RoomType);
+
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
                 {
                     conn.Open();
 
-                    string query = @"INSERT INTO Reservations (userID, arrivalDate, departureDate, roomType)
-                                     VALUES (@userID, @arrival, @departure, @roomType)";
+                    string query =
+                        "INSERT INTO Reservations (userID, arrivalDate, departureDate, roomType) VALUES (" +
+                        res.UserID + ", '" +
+                        arrival + "', '" +
+                        departure + "', '" +
+                        roomType + "')";
 
                     using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@userID", userID);
-                        cmd.Parameters.AddWithValue("@arrival", txtArrival.Text);
-                        cmd.Parameters.AddWithValue("@departure", txtDeparture.Text);
-                        cmd.Parameters.AddWithValue("@roomType", ddlRoomType.SelectedValue);
-
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -473,10 +529,6 @@ namespace hotel
             }
         }
 
-        /// <summary>
-        /// Cuando seleccionas una reserva en gvReservations, se cargan sus datos
-        /// en los TextBox para poder actualizar o borrar.
-        /// </summary>
         protected void gvReservations_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (gvReservations.SelectedRow == null)
@@ -484,25 +536,29 @@ namespace hotel
 
             GridViewRow row = gvReservations.SelectedRow;
 
-            string reservationID = row.Cells[0].Text;
-            string arrival = row.Cells[1].Text;
-            string departure = row.Cells[2].Text;
-            string roomType = row.Cells[3].Text;
+            // Creamos también objeto Reservation (por estilo)
+            Reservation res = new Reservation
+            {
+                ReservationID = int.Parse(row.Cells[0].Text),
+                ArrivalDate = row.Cells[1].Text,
+                DepartureDate = row.Cells[2].Text,
+                RoomType = row.Cells[3].Text,
+                UserID = ViewState["selectedUserID"] != null
+                         ? (int)ViewState["selectedUserID"]
+                         : 0
+            };
 
-            ViewState["reservationID"] = reservationID;
+            ViewState["reservationID"] = res.ReservationID;
 
-            txtArrival.Text = arrival;
-            txtDeparture.Text = departure;
+            txtArrival.Text = res.ArrivalDate;
+            txtDeparture.Text = res.DepartureDate;
 
-            if (ddlRoomType.Items.FindByValue(roomType) != null)
-                ddlRoomType.SelectedValue = roomType;
+            if (ddlRoomType.Items.FindByValue(res.RoomType) != null)
+                ddlRoomType.SelectedValue = res.RoomType;
 
             lblReservationMsg.Text = "Reservation selected. You can now update or delete it.";
         }
 
-        /// <summary>
-        /// Actualiza la reserva seleccionada (reservationID en ViewState).
-        /// </summary>
         protected void btnUpdateReservation_Click(object sender, EventArgs e)
         {
             lblReservationMsg.Text = "";
@@ -522,27 +578,35 @@ namespace hotel
             int userID = (int)ViewState["selectedUserID"];
             int reservationID = int.Parse(ViewState["reservationID"].ToString());
 
+            Reservation res = new Reservation
+            {
+                ReservationID = reservationID,
+                UserID = userID,
+                ArrivalDate = txtArrival.Text,
+                DepartureDate = txtDeparture.Text,
+                RoomType = ddlRoomType.SelectedValue
+            };
+
+            string arrival = Escape(res.ArrivalDate);
+            string departure = Escape(res.DepartureDate);
+            string roomType = Escape(res.RoomType);
+
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
                 {
                     conn.Open();
 
-                    string query = @"UPDATE Reservations SET
-                                        userID      = @userID,
-                                        arrivalDate = @arrival,
-                                        departureDate = @departure,
-                                        roomType    = @roomType
-                                     WHERE reservationID = @reservationID";
+                    string query =
+                        "UPDATE Reservations SET " +
+                        "userID = " + res.UserID + ", " +
+                        "arrivalDate = '" + arrival + "', " +
+                        "departureDate = '" + departure + "', " +
+                        "roomType = '" + roomType + "' " +
+                        "WHERE reservationID = " + res.ReservationID;
 
                     using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@userID", userID);
-                        cmd.Parameters.AddWithValue("@arrival", txtArrival.Text);
-                        cmd.Parameters.AddWithValue("@departure", txtDeparture.Text);
-                        cmd.Parameters.AddWithValue("@roomType", ddlRoomType.SelectedValue);
-                        cmd.Parameters.AddWithValue("@reservationID", reservationID);
-
                         int rows = cmd.ExecuteNonQuery();
 
                         if (rows > 0)
@@ -560,9 +624,6 @@ namespace hotel
             }
         }
 
-        /// <summary>
-        /// Elimina la reserva seleccionada (reservationID en ViewState).
-        /// </summary>
         protected void btnDeleteReservation_Click(object sender, EventArgs e)
         {
             lblReservationMsg.Text = "";
@@ -582,18 +643,25 @@ namespace hotel
             int userID = (int)ViewState["selectedUserID"];
             int reservationID = int.Parse(ViewState["reservationID"].ToString());
 
+            // También podemos crear un objeto Reservation por estilo
+            Reservation res = new Reservation
+            {
+                ReservationID = reservationID,
+                UserID = userID
+            };
+
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
                 {
                     conn.Open();
 
-                    string query = @"DELETE FROM Reservations WHERE reservationID = @reservationID";
+                    string query =
+                        "DELETE FROM Reservations " +
+                        "WHERE reservationID = " + res.ReservationID;
 
                     using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@reservationID", reservationID);
-
                         int rows = cmd.ExecuteNonQuery();
 
                         if (rows > 0)
