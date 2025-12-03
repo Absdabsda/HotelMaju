@@ -13,10 +13,8 @@
         <asp:Panel ID="header" runat="server" CssClass="header">
             <span class="header-logo">MaJu Hotel</span>
 
-            <asp:Button ID="btnLogout" runat="server"
-                        Text="Logout"
-                        CssClass="logout-btn"
-                        OnClick="btnLogout_Click" />
+            <asp:Button ID="btnLogout" runat="server" Text="Logout" CssClass="logout-btn" OnClick="btnLogout_Click" />
+
         </asp:Panel>
 
         <div class="container">
@@ -34,13 +32,15 @@
 
             <h2>Your Reservations</h2>
 
-            <div class="info-card">
-                <h3>Reservations</h3>
-                <asp:GridView ID="gvReservations" runat="server" CssClass="reservations-table"></asp:GridView>
-            </div>
+            <asp:GridView ID="gvReservations" runat="server" CssClass="reservations-table" AutoGenerateColumns="False">
+                <Columns>
+                    <asp:BoundField DataField="arrivalDate" HeaderText="Arrival" />
+                    <asp:BoundField DataField="departureDate" HeaderText="Departure" />
+                    <asp:BoundField DataField="roomType" HeaderText="Room Type" />
+                </Columns>
 
+            </asp:GridView>
         </div>
-
     </form>
 </body>
 </html>

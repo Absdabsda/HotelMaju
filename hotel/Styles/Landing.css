@@ -173,17 +173,17 @@
     width: 48%;
 }
 
-    .room-info h3 {
-        font-size: 28px;
-        color: #4B5C52;
-        margin-bottom: 10px;
-    }
+.room-info h3 {
+    font-size: 28px;
+    color: #4B5C52;
+    margin-bottom: 10px;
+}
 
-    .room-info p {
-        font-size: 18px;
-        color: #5C6A63;
-        line-height: 1.6;
-    }
+.room-info p {
+    font-size: 18px;
+    color: #5C6A63;
+    line-height: 1.6;
+}
 
 .footer {
     background-color: #4B5C52;
@@ -247,18 +247,18 @@
         margin-right: 30px;
     }
 
-        .nav-links-container.open {
-            display: block;
-        }
+    .nav-links-container.open {
+        display: block;
+    }
 
     .nav-links {
         flex-direction: column;
         gap: 15px;
     }
 
-        .nav-links a {
-            font-size: 18px;
-        }
+    .nav-links a {
+        font-size: 18px;
+    }
 
     .login-btn {
         text-align: center;

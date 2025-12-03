@@ -1,11 +1,10 @@
-/* Estructura base */
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
 
-/* Fondo beige */
 body {
     font-family: "Segoe UI", Arial, sans-serif;
     background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25)), url('../Img/castle.jpeg');
@@ -14,8 +13,6 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
-
-
 
 form {
     min-height: 100vh;
@@ -26,7 +23,6 @@ form {
     padding: 0;
 }
 
-/* NAVBAR */
 .navbar {
     background-color: #6F8F72;
     padding: 15px 40px;
@@ -41,7 +37,6 @@ form {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-
 .logo {
     color: white;
     font-size: 26px;
@@ -55,11 +50,11 @@ form {
     flex-wrap: nowrap;
 }
 
-    .nav-links a {
-        color: white;
-        text-decoration: none;
-        font-size: 16px;
-    }
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+}
 
 .login-btn {
     padding: 6px 14px;
@@ -68,7 +63,6 @@ form {
     border-radius: 5px;
 }
 
-/* Contenedor del login */
 .login-container {
     background: #fffdf9;
     padding: 32px 40px;
@@ -79,71 +73,66 @@ form {
     box-sizing: border-box;
 }
 
-    /* Que todo dentro del contenedor respete el ancho */
-    .login-container * {
-        box-sizing: border-box;
-    }
+.login-container * {
+    box-sizing: border-box;
+}
 
-    /* Título */
-    .login-container h2 {
-        text-align: center;
-        margin: 0 0 16px 0;
-        color: #35423a;
-        font-size: 24px;
-        font-weight: 700;
-    }
+.login-container h2 {
+    text-align: center;
+    margin: 0 0 16px 0;
+    color: #35423a;
+    font-size: 24px;
+    font-weight: 700;
+}
 
-    /* Inputs (text y password) */
-    .login-container input[type="text"],
-    .login-container input[type="password"] {
-        display: block;
-        width: 100%;
-        padding: 10px 12px;
-        margin-top: 4px;
-        margin-bottom: 14px;
-        border: 1px solid #d8c9b3;
-        border-radius: 10px;
-        font-size: 14px;
-        outline: none;
-        background-color: #f9f4eb;
-        transition: 0.2s;
-    }
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 4px;
+    margin-bottom: 14px;
+    border: 1px solid #d8c9b3;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    background-color: #f9f4eb;
+    transition: 0.2s;
+}
 
-        .login-container input[type="text"]::placeholder,
-        .login-container input[type="password"]::placeholder {
-            color: #a89478;
-        }
+.login-container input[type="text"]::placeholder,
+.login-container input[type="password"]::placeholder {
+    color: #a89478;
+}
 
-        .login-container input[type="text"]:focus,
-        .login-container input[type="password"]:focus {
-            border-color: #8aa089;
-            box-shadow: 0 0 0 3px rgba(138, 160, 137, 0.25);
-            background-color: #fffaf3;
-        }
+.login-container input[type="text"]:focus,
+.login-container input[type="password"]:focus {
+     border-color: #8aa089;
+     box-shadow: 0 0 0 3px rgba(138, 160, 137, 0.25);
+     background-color: #fffaf3;
+}
 
-    /* Botón */
-    .login-container .btn-login {
-        display: block;
-        width: 100%; 
-        padding: 11px;
-        background-color: #8aa089;
-        border: none;
-        border-radius: 999px;
-        font-size: 15px;
-        font-weight: 600;
-        color: #fffdf8;
-        cursor: pointer;
-        transition: 0.2s;
-        margin-top: 4px;
-    }
+.login-container .btn-login {
+     display: block;
+     width: 100%; 
+     padding: 11px;
+     background-color: #8aa089;
+     border: none;
+     border-radius: 999px;
+     font-size: 15px;
+     font-weight: 600;
+     color: #fffdf8;
+     cursor: pointer;
+     transition: 0.2s;
+     margin-top: 4px;
+}
 
-        .login-container .btn-login:hover {
-            background-color: #788d77;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
-        }
+.login-container .btn-login:hover {
+     background-color: #788d77;
+     transform: translateY(-1px);
+     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+}
 
-/* Mensaje de error */
 .error-label {
     color: #b5493c;
     font-weight: 600;
