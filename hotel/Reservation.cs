@@ -7,14 +7,14 @@ namespace hotel.Models
 {
     internal class Reservation
     {
-        // ===== Fields =====
+       
         private int reservationID;
         private int userID;
         private string arrivalDate;
         private string departureDate;
         private string roomType;
 
-        // ===== Properties =====
+        
         public int ReservationID
         {
             get { return reservationID; }
@@ -45,7 +45,6 @@ namespace hotel.Models
             set { roomType = value; }
         }
 
-        // ===== Constructor =====
         public Reservation() { }
         public Reservation(int reservationID, int userID, string arrivalDate, string departureDate, string roomType)
         {
@@ -56,7 +55,6 @@ namespace hotel.Models
             RoomType = roomType;
         }
 
-        // ===== Optional Utility Methods =====
         public string GetReservationInfo()
         {
             return

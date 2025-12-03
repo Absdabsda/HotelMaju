@@ -35,10 +35,8 @@ namespace hotel
                 {
                     conn.Open();
 
-                    // ⭐ 1. Hashear la contraseña que escribió el usuario
                     string hashedInput = hotel.Security.MD5Hash(password.Text);
 
-                    // ⭐ 2. Comparar contra el hash guardado, NO contra la contraseña original
                     string query = "SELECT profile FROM Users " +
                                    "WHERE username = @user AND password = @pass";
 

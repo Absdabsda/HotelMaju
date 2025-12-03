@@ -6,7 +6,7 @@ namespace hotel.Models
 {
     internal class Client
     {
-        // ===== Fields =====
+
         private int clientID;
         private string name;
         private string dob;
@@ -14,7 +14,7 @@ namespace hotel.Models
         private string mobile;
         private int userID;
 
-        // ===== Properties =====
+
         public int ClientID
         {
             get { return clientID; }
@@ -51,7 +51,7 @@ namespace hotel.Models
             set { userID = value; }
         }
 
-        // ===== Constructor =====
+        
         public Client() { }
         public Client(int clientID, string name, string dob, string address, string mobile, int userID)
         {
@@ -63,7 +63,7 @@ namespace hotel.Models
             UserID = userID;
         }
 
-        // ===== Methods =====
+       
         public string GetClientInfo()
         {
             return

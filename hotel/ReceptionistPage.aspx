@@ -13,9 +13,6 @@
 <body>
     <form id="form1" runat="server">
 
-        <!-- ======================= -->
-        <!--       NAVBAR/HEADER     -->
-        <!-- ======================= -->
         <asp:Panel ID="navbar" runat="server" CssClass="navbar">
             <div class="navbar-content">
                 <asp:Label ID="lblLogo" runat="server" Text="MaJu Hotel" CssClass="logo"></asp:Label>
@@ -31,9 +28,6 @@
 
         <div class="page-wrapper">
 
-            <!-- ======================================================= -->
-            <!--           CLIENT SEARCH PANEL (Search client)           -->
-            <!-- ======================================================= -->
             <div class="panel">
                 <h2>Search client</h2>
                 <p class="panel-subtitle">
@@ -55,7 +49,6 @@
                     </div>
                 </div>
 
-                <!-- Tabla de resultados de búsqueda -->
                 <asp:GridView ID="gvClients" runat="server"
                               CssClass="reservations-table"
                               AutoGenerateColumns="False"
@@ -79,14 +72,9 @@
             </div>
 
 
-
-            <!-- ======================================================= -->
-            <!--                   CLIENT INFORMATION PANEL              -->
-            <!-- ======================================================= -->
             <div class="panel">
                 <h2>Client information</h2>
 
-                <!-- quién está seleccionado ahora mismo -->
                 <asp:Label ID="lblSelectedClient" runat="server"
                            CssClass="status-label"
                            Text="No client selected yet." />
@@ -140,18 +128,12 @@
                 <asp:Label ID="lblClientMsg" runat="server" CssClass="status-label" />
             </div>
 
-
-
-            <!-- ======================================================= -->
-            <!--                    RESERVATIONS PANEL                   -->
-            <!-- ======================================================= -->
             <div class="panel">
                 <h2>Reservations</h2>
                 <p class="panel-subtitle">
                     Add, edit or remove reservations for the selected client.
                 </p>
 
-                <!-- Campos de reserva -->
                 <div class="panel-fields">
 
                     <div class="form-field">
@@ -175,7 +157,6 @@
 
                 </div>
 
-                <!-- Tabla de reservas del cliente seleccionado -->
                 <asp:GridView ID="gvReservations" runat="server"
                               CssClass="reservations-table"
                               AutoGenerateColumns="False"
@@ -196,7 +177,6 @@
                     </Columns>
                 </asp:GridView>
 
-                <!-- Botones de CRUD de reserva -->
                 <div class="button-row">
                     <asp:Button ID="btnAddReservation" runat="server"
                                 Text="Create"
@@ -217,7 +197,7 @@
                 <asp:Label ID="lblReservationMsg" runat="server" CssClass="status-label" />
             </div>
 
-        </div><!-- page-wrapper -->
+        </div>
 
     </form>
 </body>
