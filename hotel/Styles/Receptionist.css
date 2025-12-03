@@ -1,5 +1,4 @@
-﻿/* ===== ESTRUCTURA GENERAL ===== */
-
+﻿
 html, body {
     height: 100%;
     margin: 0;
@@ -12,16 +11,13 @@ body {
     color: #384439;
 }
 
-/* Contenido centrado bajo el navbar */
 .page-wrapper {
-    margin-top: 120px; /* para que no lo tape el navbar */
+    margin-top: 120px;
     max-width: 1100px;
     margin-left: auto;
     margin-right: auto;
     padding: 0 20px 40px 20px;
 }
-
-/* ===== NAVBAR / HEADER ===== */
 
 .navbar {
     background-color: #6F8F72;
@@ -52,7 +48,6 @@ body {
     letter-spacing: 0.05em;
 }
 
-/* Botón logout */
 .logout-btn {
     padding: 8px 18px;
     background-color: #ffffff;
@@ -66,13 +61,11 @@ body {
     transition: background-color 0.2s, transform 0.15s, box-shadow 0.15s;
 }
 
-    .logout-btn:hover {
-        background-color: #f2f2f2;
-        transform: translateY(-1px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.22);
-    }
-
-/* ===== TARJETAS/PANELES ===== */
+.logout-btn:hover {
+    background-color: #f2f2f2;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.22);
+}
 
 .panel {
     background: #fffdf9;
@@ -83,20 +76,18 @@ body {
     border: 1px solid #e1d6c3;
 }
 
-    .panel h2 {
-        margin: 0 0 6px 0;
-        font-size: 20px;
-        color: #35423a;
-    }
+.panel h2 {
+    margin: 0 0 6px 0;
+    font-size: 20px;
+    color: #35423a;
+}
 
-/* Subtítulo bajo el h2 */
 .panel-subtitle {
     margin: 0 0 18px 0;
     font-size: 13px;
     color: #7a7567;
 }
 
-/* Layout de campos: grid responsive */
 .panel-fields {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -111,12 +102,10 @@ body {
     color: #4a4a3f;
 }
 
-    .form-field label {
-        margin-bottom: 4px;
-        font-weight: 500;
-    }
-
-/* Inputs / selects */
+.form-field label {
+    margin-bottom: 4px;
+    font-weight: 500;
+}
 
 .panel input[type="text"],
 .panel input[type="date"],
@@ -130,20 +119,18 @@ body {
     transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
 }
 
-    .panel input[type="text"]::placeholder,
-    .panel input[type="date"]::placeholder {
-        color: #ae9c83;
-    }
+.panel input[type="text"]::placeholder,
+.panel input[type="date"]::placeholder {
+    color: #ae9c83;
+}
 
-    .panel input[type="text"]:focus,
-    .panel input[type="date"]:focus,
-    .panel select:focus {
-        border-color: #8aa089;
-        box-shadow: 0 0 0 3px rgba(138, 160, 137, 0.25);
-        background-color: #fffaf3;
-    }
-
-/* ===== BOTONES ===== */
+.panel input[type="text"]:focus,
+.panel input[type="date"]:focus,
+.panel select:focus {
+    border-color: #8aa089;
+    box-shadow: 0 0 0 3px rgba(138, 160, 137, 0.25);
+    background-color: #fffaf3;
+}
 
 .button-row {
     margin-top: 10px;
@@ -163,20 +150,17 @@ body {
     transition: background-color 0.2s, transform 0.15s, box-shadow 0.15s;
 }
 
-/* todos los asp:Button con CssClass="btn btn-primary" cogen este estilo base */
 .btn-primary {
     background-color: #8aa089;
     color: #fffdf8;
     box-shadow: 0 3px 8px rgba(0,0,0,0.18);
 }
 
-    .btn-primary:hover {
-        background-color: #788d77;
-        box-shadow: 0 5px 14px rgba(0, 0, 0, 0.22);
-        transform: translateY(-1px);
-    }
-
-/* Mensajes de estado */
+.btn-primary:hover {
+    background-color: #788d77;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.22);
+    transform: translateY(-1px);
+}
 
 .status-label {
     display: block;
@@ -186,16 +170,12 @@ body {
     color: #6b4b3b;
 }
 
-/* Separador suave entre secciones (si lo usas) */
-
 .section-divider {
     height: 1px;
     border: none;
     margin: 24px 0;
     background: rgba(0,0,0,0.06);
 }
-
-/* ===== TABLA DE RESERVAS ===== */
 
 .reservations-table {
     width: 100%;
@@ -207,50 +187,47 @@ body {
     font-size: 14px;
 }
 
-    .reservations-table th {
-        background: #8aa089;
-        color: white;
-        padding: 10px;
-        text-align: left;
-        font-weight: 600;
-    }
+.reservations-table th {
+    background: #8aa089;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    font-weight: 600;
+}
 
-    .reservations-table td {
-        padding: 10px;
-        border-bottom: 1px solid #e8e0d3;
-    }
+.reservations-table td {
+    padding: 10px;
+    border-bottom: 1px solid #e8e0d3;
+}
 
-    /* Hover fila */
-    .reservations-table tr:hover {
-        background: #f3efe4;
-    }
+.reservations-table tr:hover {
+    background: #f3efe4;
+}
 
-    /* Botón Select del GridView (CommandField) */
-    .reservations-table td a,
-    .reservations-table td input[type="submit"],
-    .reservations-table td input[type="button"] {
-        display: inline-block;
-        padding: 5px 10px;
-        border-radius: 999px;
-        border: none;
-        background-color: #8aa089;
-        color: #fffdf9;
-        font-size: 12px;
-        font-weight: 600;
-        text-decoration: none;
-        cursor: pointer;
-        transition: background-color 0.2s, transform 0.15s, box-shadow 0.15s;
-    }
+.reservations-table td a,
+.reservations-table td input[type="submit"],
+.reservations-table td input[type="button"] {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: none;
+    background-color: #8aa089;
+    color: #fffdf9;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.15s, box-shadow 0.15s;
+}
 
-        .reservations-table td a:hover,
-        .reservations-table td input[type="submit"]:hover,
-        .reservations-table td input[type="button"]:hover {
-            background-color: #788d77;
-            box-shadow: 0 3px 8px rgba(0,0,0,0.18);
-            transform: translateY(-1px);
-        }
+.reservations-table td a:hover,
+.reservations-table td input[type="submit"]:hover,
+.reservations-table td input[type="button"]:hover {
+    background-color: #788d77;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+    transform: translateY(-1px);
+}
 
-/* ===== RESPONSIVE PEQUEÑO ===== */
 
 @media (max-width: 768px) {
     .navbar {
@@ -268,7 +245,6 @@ body {
         padding: 18px 16px;
     }
 }
-/* ===== COMPATIBILIDAD GRIDVIEW ===== */
 
 .reservations-table table,
 .reservations-table {
@@ -279,47 +255,42 @@ body {
     overflow: hidden;
 }
 
-    /* Encabezado */
-    .reservations-table .table-header th {
-        background: #8aa089 !important;
-        color: white !important;
-        padding: 12px !important;
-        font-weight: 600;
-        text-align: left;
-    }
+.reservations-table .table-header th {
+    background: #8aa089 !important;
+    color: white !important;
+    padding: 12px !important;
+    font-weight: 600;
+    text-align: left;
+}
 
-    /* Filas */
-    .reservations-table .table-row td,
-    .reservations-table .table-row-alt td {
-        padding: 10px !important;
-        border-bottom: 1px solid #e8e0d3 !important;
-    }
+.reservations-table .table-row td,
+.reservations-table .table-row-alt td {
+    padding: 10px !important;
+    border-bottom: 1px solid #e8e0d3 !important;
+}
 
-    /* Hover en filas */
-    .reservations-table .table-row:hover td,
-    .reservations-table .table-row-alt:hover td {
-        background: #f3efe4 !important;
-    }
+.reservations-table .table-row:hover td,
+.reservations-table .table-row-alt:hover td {
+    background: #f3efe4 !important;
+}
 
-    /* Fila seleccionada */
-    .reservations-table .table-selected td {
-        background: #d6e2d3 !important;
-        font-weight: 700;
-    }
+.reservations-table .table-selected td {
+    background: #d6e2d3 !important;
+    font-weight: 700;
+}
 
-    /* Botón Select */
-    .reservations-table a,
-    .reservations-table input[type="submit"] {
-        display: inline-block;
-        padding: 6px 12px;
-        background: #8aa089 !important;
-        color: white !important;
-        border-radius: 999px;
-        text-decoration: none;
-        font-size: 12px;
-    }
+.reservations-table a,
+.reservations-table input[type="submit"] {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #8aa089 !important;
+    color: white !important;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 12px;
+}
 
-        .reservations-table a:hover,
-        .reservations-table input[type="submit"]:hover {
-            background: #788d77 !important;
-        }
+.reservations-table a:hover,
+.reservations-table input[type="submit"]:hover {
+    background: #788d77 !important;
+}
