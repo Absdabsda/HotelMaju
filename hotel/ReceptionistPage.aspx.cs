@@ -61,7 +61,6 @@ namespace hotel
                 return;
             }
 
-            // Creamos el objeto Client a partir de los campos
             Client client = new Client
             {
                 ClientID = clientID,
@@ -71,11 +70,13 @@ namespace hotel
                 Mobile = txtMobile.Text.Trim()
             };
 
-            // Sanitizamos strings para el SQL
             string name = Escape(client.Name);
             string dob = Escape(client.DOB);
             string address = Escape(client.Address);
             string mobile = Escape(client.Mobile);
+
+            string initialPassword = client.ClientID.ToString();
+            string hashedPassword = hotel.Security.MD5Hash(initialPassword);
 
             try
             {
@@ -83,13 +84,17 @@ namespace hotel
                 {
                     conn.Open();
 
+                    // ✔ INSERT EN ORDEN CORRECTO DE COLUMNAS
                     string query =
-                        "INSERT INTO Users (clientID, username, DOB, address, mobile) VALUES (" +
-                        client.ClientID + ", '" +
-                        name + "', '" +
-                        dob + "', '" +
-                        address + "', '" +
-                        mobile + "')";
+                        "INSERT INTO Users (username, profile, password, DOB, address, mobile, clientID) VALUES (" +
+                        "'" + name + "', " +
+                        "'client', " +
+                        "'" + hashedPassword + "', " +
+                        "'" + dob + "', " +
+                        "'" + address + "', " +
+                        "'" + mobile + "', " +
+                        client.ClientID +
+                        ")";
 
                     using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                     {
@@ -97,13 +102,16 @@ namespace hotel
                     }
                 }
 
-                lblClientMsg.Text = "Client created successfully.";
+                lblClientMsg.Text = "Client created successfully. Initial password = ClientID.";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                lblClientMsg.Text = "Error creating client.";
+                lblClientMsg.Text = "Error creating client: " + ex.Message;
             }
         }
+
+
+
 
         protected void btnFindClient_Click(object sender, EventArgs e)
         {

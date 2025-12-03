@@ -35,33 +35,41 @@ namespace hotel
                 {
                     conn.Open();
 
+                    // ⭐ 1. Hashear la contraseña que escribió el usuario
+                    string hashedInput = hotel.Security.MD5Hash(password.Text);
+
+                    // ⭐ 2. Comparar contra el hash guardado, NO contra la contraseña original
                     string query = "SELECT profile FROM Users " +
-                                   "WHERE username = '" + username.Text + "' " +
-                                   "AND password = '" + password.Text + "'";
+                                   "WHERE username = @user AND password = @pass";
 
                     using (SQLiteCommand comm = new SQLiteCommand(query, conn))
-                    using (SQLiteDataReader reader = comm.ExecuteReader())
                     {
-                        if (reader.Read())
+                        comm.Parameters.AddWithValue("@user", username.Text);
+                        comm.Parameters.AddWithValue("@pass", hashedInput);
+
+                        using (SQLiteDataReader reader = comm.ExecuteReader())
                         {
-                            string profile = reader["profile"].ToString();
+                            if (reader.Read())
+                            {
+                                string profile = reader["profile"].ToString();
 
-                            Session["username"] = username.Text;
-                            Session["profile"] = profile;
+                                Session["username"] = username.Text;
+                                Session["profile"] = profile;
 
-                            if (profile == "receptionist")
-                                nextPage = "ReceptionistPage.aspx";
-                            else if (profile == "client")
-                                nextPage = "ClientPage.aspx";
+                                if (profile == "receptionist")
+                                    nextPage = "ReceptionistPage.aspx";
+                                else if (profile == "client")
+                                    nextPage = "ClientPage.aspx";
+                                else
+                                    Label1.Text = "Unknown profile";
+                            }
                             else
-                                Label1.Text = "Unknown profile";
+                            {
+                                Label1.Text = "Wrong username or password";
+                            }
                         }
-                        else
-                        {
-                            Label1.Text = "Wrong username or password";
-                        }
-                    } 
-                }     
+                    }
+                }
             }
             catch
             {

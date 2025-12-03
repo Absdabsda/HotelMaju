@@ -125,6 +125,7 @@
       <DependentUpon>ClientPage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reservation.cs" />
+    <Compile Include="Security.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Img\hotel.webp" />
