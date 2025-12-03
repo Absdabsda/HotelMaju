@@ -236,7 +236,7 @@ namespace hotel
                         int rows = cmd.ExecuteNonQuery();
 
                         if (rows > 0)
-                        {
+                        {                                                  
                             lblClientMsg.Text = $"Client deleted ({rows} row/s).";
                             txtName.Text = "";
                             txtDOB.Text = "";
