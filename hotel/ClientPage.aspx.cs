@@ -37,11 +37,11 @@ namespace hotel
 
                 if (r1.Read())
                 {
-                    lblName.Text = "Name: " + username;
-                    lblID.Text = "ID Number: " + r1["userID"].ToString();
-                    lblDOB.Text = "Date of birth: " + r1["DOB"].ToString();
-                    lblAddress.Text = "Address: " + r1["address"].ToString();
-                    lblMobile.Text = "Mobile Phone: " + r1["mobile"].ToString();
+                    lblName.Text = username;
+                    lblID.Text = r1["userID"].ToString();
+                    lblDOB.Text = r1["DOB"].ToString();
+                    lblAddress.Text = r1["address"].ToString();
+                    lblMobile.Text = r1["mobile"].ToString();
 
                     userId = r1["userID"].ToString();
                 }

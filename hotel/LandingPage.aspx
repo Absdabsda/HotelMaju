@@ -75,7 +75,6 @@
 
     <h2>Our Rooms</h2>
 
-    <!-- ROOM 1 -->
     <div class="room-block">
         <img src="Img/bed.jpg" class="room-img" />
         <div class="room-info">
@@ -84,7 +83,6 @@
         </div>
     </div>
 
-    <!-- ROOM 2 (invertido) -->
     <div class="room-block reverse">
         <img src="Img/suite.jpg" class="room-img" />
         <div class="room-info">
@@ -93,7 +91,6 @@
         </div>
     </div>
 
-    <!-- ROOM 3 -->
     <div class="room-block">
         <img src="Img/deluxe.jpg" class="room-img" />
         <div class="room-info">
