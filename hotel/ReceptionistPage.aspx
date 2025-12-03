@@ -26,7 +26,7 @@
 <div class="page-wrapper">
         <!-- CLIENTES -->
         <div class="panel">
-            <h2>Clientes</h2>
+            <h2>Clients</h2>
 
             <div class="panel-fields">
                 <div class="form-field">
@@ -78,7 +78,7 @@
 
         <!-- RESERVAS -->
         <div class="panel">
-            <h2>Reservas</h2>
+            <h2>Reservations</h2>
 
             <div class="panel-fields">
                 <div class="form-field">
