@@ -4,7 +4,6 @@ body {
     padding: 0;
     font-family: 'Segoe UI', sans-serif;
     color: #5C4033;
-    /* Fondo difuminado leaves.jpg */
     background: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('../Img/leaves.jpg') center/cover fixed no-repeat;
 }
 
@@ -43,9 +42,9 @@ body {
     transition: 0.2s ease;
 }
 
-    .logout-btn:hover {
-        background-color: #ececec;
-    }
+.logout-btn:hover {
+    background-color: #ececec;
+}
 
 
 .container {
@@ -72,18 +71,18 @@ h2 {
     backdrop-filter: blur(6px);
 }
 
-    .info-card h3 {
-        margin: 0 0 12px 0;
-        color: #5C4033;
-        font-size: 20px;
-        border-bottom: 2px solid #A17C6B;
-        padding-bottom: 6px;
-    }
+.info-card h3 {
+    margin: 0 0 12px 0;
+    color: #5C4033;
+    font-size: 20px;
+    border-bottom: 2px solid #A17C6B;
+    padding-bottom: 6px;
+}
 
-    .info-card p {
-        margin: 8px 0;
-        font-size: 16px;
-    }
+.info-card p {
+    margin: 8px 0;
+    font-size: 16px;
+}
 
 table {
     width: 100%;
@@ -91,19 +90,19 @@ table {
     margin-top: 15px;
 }
 
-    table th {
-        background-color: #A17C6B;
-        color: white;
-        padding: 12px;
-        text-align: left;
-        font-size: 15px;
-    }
+table th {
+    background-color: #A17C6B;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-size: 15px;
+}
 
-    table td {
-        padding: 12px;
-        background-color: #FBF8F3;
-        border-bottom: 1px solid #E7D9CC;
-    }
+table td {
+    padding: 12px;
+    background-color: #FBF8F3;
+    border-bottom: 1px solid #E7D9CC;
+}
 
 @media (max-width: 600px) {
     .container {
