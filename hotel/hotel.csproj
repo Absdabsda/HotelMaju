@@ -94,6 +94,7 @@
     <Content Include="ClientPage.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client.cs" />
     <Compile Include="LandingPage.aspx.cs">
       <DependentUpon>LandingPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -123,6 +124,7 @@
     <Compile Include="ClientPage.aspx.designer.cs">
       <DependentUpon>ClientPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Reservation.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Img\hotel.webp" />

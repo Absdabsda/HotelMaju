@@ -51,6 +51,51 @@ namespace hotel
         protected global::System.Web.UI.WebControls.Button btnLogout;
 
         /// <summary>
+        /// Control txtSearchClient.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSearchClient;
+
+        /// <summary>
+        /// Control btnSearchClient.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSearchClient;
+
+        /// <summary>
+        /// Control gvClients.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvClients;
+
+        /// <summary>
+        /// Control lblSearchMsg.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSearchMsg;
+
+        /// <summary>
+        /// Control lblSelectedClient.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSelectedClient;
+
+        /// <summary>
         /// Control txtClientID.
         /// </summary>
         /// <remarks>
@@ -96,6 +141,15 @@ namespace hotel
         protected global::System.Web.UI.WebControls.TextBox txtMobile;
 
         /// <summary>
+        /// Control btnFindClient.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnFindClient;
+
+        /// <summary>
         /// Control btnAddClient.
         /// </summary>
         /// <remarks>
@@ -123,15 +177,6 @@ namespace hotel
         protected global::System.Web.UI.WebControls.Button btnDeleteClient;
 
         /// <summary>
-        /// Control btnFindClient.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFindClient;
-
-        /// <summary>
         /// Control lblClientMsg.
         /// </summary>
         /// <remarks>
@@ -139,15 +184,6 @@ namespace hotel
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblClientMsg;
-
-        /// <summary>
-        /// Control ddlUsers.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlUsers;
 
         /// <summary>
         /// Control txtArrival.
@@ -177,13 +213,13 @@ namespace hotel
         protected global::System.Web.UI.WebControls.DropDownList ddlRoomType;
 
         /// <summary>
-        /// Control txtRoomID.
+        /// Control gvReservations.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRoomID;
+        protected global::System.Web.UI.WebControls.GridView gvReservations;
 
         /// <summary>
         /// Control btnAddReservation.
@@ -211,15 +247,6 @@ namespace hotel
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnDeleteReservation;
-
-        /// <summary>
-        /// Control btnFindReservation.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnFindReservation;
 
         /// <summary>
         /// Control lblReservationMsg.
