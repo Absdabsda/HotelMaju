@@ -10,29 +10,19 @@ namespace hotel
 {
     public partial class ReceptionistPage : System.Web.UI.Page
     {
-        // =========================================================
-        //              CONEXIÓN A LA BASE DE DATOS
-        // =========================================================
-
         private string GetConnectionString()
         {
             string dbPath = Server.MapPath("~/hotel.db");
             return "Data Source=" + dbPath + ";Version=3;BusyTimeout=5000;";
         }
 
-        // Pequeño helper para que las comillas no rompan el SQL
         private string Escape(string value)
         {
             return (value ?? "").Replace("'", "''");
         }
 
-        // =========================================================
-        //                    CICLO DE PÁGINA
-        // =========================================================
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Seguridad básica: solo recepcionistas logueados
             if (Session["username"] == null)
                 Response.Redirect("Login.aspx");
 
@@ -47,22 +37,16 @@ namespace hotel
             }
         }
 
-        // =========================================================
-        //                      CLIENTES - CRUD
-        // =========================================================
-
         protected void btnAddClient_Click(object sender, EventArgs e)
         {
             lblClientMsg.Text = "";
 
-            // 1) Validar ClientID numérico y > 0
             if (!int.TryParse(txtClientID.Text, out int clientID) || clientID <= 0)
             {
                 lblClientMsg.Text = "Enter a valid positive numeric Client ID.";
                 return;
             }
 
-            // 2) Validar campos obligatorios
             if (string.IsNullOrWhiteSpace(txtName.Text) ||
                 string.IsNullOrWhiteSpace(txtDOB.Text) ||
                 string.IsNullOrWhiteSpace(txtAddress.Text) ||
@@ -72,7 +56,6 @@ namespace hotel
                 return;
             }
 
-            // 3) Validar teléfono solo números y longitud razonable
             string mobileRaw = txtMobile.Text.Trim();
 
             if (!long.TryParse(mobileRaw, out _))
@@ -87,21 +70,18 @@ namespace hotel
                 return;
             }
 
-            // 4) Validar que la fecha tenga formato correcto
             if (!DateTime.TryParse(txtDOB.Text, out _))
             {
                 lblClientMsg.Text = "Invalid date format for DOB.";
                 return;
             }
 
-            // 5) Comprobar que NO exista ya un cliente con ese ClientID
             if (ClientExists(clientID))
             {
                 lblClientMsg.Text = "There is already a client with that Client ID.";
                 return;
             }
 
-            // 6) Crear objeto Client con los datos del formulario
             Client client = new Client
             {
                 ClientID = clientID,
@@ -111,7 +91,6 @@ namespace hotel
                 Mobile = mobileRaw
             };
 
-            // 7) Sanitizar strings para el SQL
             string name = Escape(client.Name);
             string dob = Escape(client.DOB);
             string address = Escape(client.Address);
@@ -126,7 +105,6 @@ namespace hotel
                 {
                     conn.Open();
 
-                    // ✔ INSERT EN ORDEN CORRECTO DE COLUMNAS
                     string query =
                         "INSERT INTO Users (username, profile, password, DOB, address, mobile, clientID) VALUES (" +
                         "'" + name + "', " +
@@ -152,9 +130,6 @@ namespace hotel
             }
         }
 
-
-
-
         protected void btnFindClient_Click(object sender, EventArgs e)
         {
             lblClientMsg.Text = "";
@@ -168,10 +143,6 @@ namespace hotel
             LoadClientData(clientID);
         }
 
-        /// <summary>
-        /// Carga los datos de un cliente en un objeto Client y rellena el formulario.
-        /// También carga las reservas del cliente.
-        /// </summary>
         private void LoadClientData(int clientID)
         {
             Client client = null;
@@ -207,7 +178,6 @@ namespace hotel
 
                 if (client != null)
                 {
-                    // Rellenamos los TextBox con la clase
                     txtClientID.Text = client.ClientID.ToString();
                     txtName.Text = client.Name;
                     txtDOB.Text = client.DOB;
@@ -219,7 +189,6 @@ namespace hotel
                     lblSelectedClient.Text = $"Selected client: {client.Name} (ID {client.ClientID})";
                     lblClientMsg.Text = "Client found.";
 
-                    // Cargamos sus reservas
                     LoadReservationsForClient(client.UserID);
                 }
                 else
@@ -237,21 +206,18 @@ namespace hotel
         {
             lblClientMsg.Text = "";
 
-            // 1) Validar ClientID numérico y > 0
             if (!int.TryParse(txtClientID.Text, out int clientID) || clientID <= 0)
             {
                 lblClientMsg.Text = "Enter a valid positive Client ID to update.";
                 return;
             }
 
-            // 2) Comprobar que el cliente EXISTE antes de actualizar
             if (!ClientExists(clientID))
             {
                 lblClientMsg.Text = "No client found with that ID. Cannot update.";
                 return;
             }
 
-            // 3) Validar campos obligatorios
             if (string.IsNullOrWhiteSpace(txtName.Text) ||
                 string.IsNullOrWhiteSpace(txtDOB.Text) ||
                 string.IsNullOrWhiteSpace(txtAddress.Text) ||
@@ -261,7 +227,6 @@ namespace hotel
                 return;
             }
 
-            // 4) Validar teléfono
             string mobileRaw = txtMobile.Text.Trim();
 
             if (!long.TryParse(mobileRaw, out _))
@@ -276,14 +241,12 @@ namespace hotel
                 return;
             }
 
-            // 5) Validar fecha
             if (!DateTime.TryParse(txtDOB.Text, out _))
             {
                 lblClientMsg.Text = "Invalid date format for DOB.";
                 return;
             }
 
-            // 6) Crear objeto Client con los nuevos datos
             Client client = new Client
             {
                 ClientID = clientID,
@@ -334,21 +297,18 @@ namespace hotel
         {
             lblClientMsg.Text = "";
 
-            // 1) Validar ClientID
             if (!int.TryParse(txtClientID.Text, out int clientID) || clientID <= 0)
             {
                 lblClientMsg.Text = "Enter a valid positive Client ID to delete.";
                 return;
             }
 
-            // 2) Comprobar que el cliente EXISTE
             if (!ClientExists(clientID))
             {
                 lblClientMsg.Text = "No client found with that ID. Nothing to delete.";
                 return;
             }
 
-            // 3) Obtener su userID interno
             int userID = GetUserIdByClientId(clientID);
             if (userID <= 0)
             {
@@ -356,14 +316,12 @@ namespace hotel
                 return;
             }
 
-            // 4) Comprobar si tiene reservas
             if (ClientHasReservations(userID))
             {
                 lblClientMsg.Text = "This client still has reservations. Delete their reservations first.";
                 return;
             }
 
-            // 5) Borrar cliente
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
@@ -401,11 +359,6 @@ namespace hotel
                 lblClientMsg.Text = "Error deleting client: " + ex.Message;
             }
         }
-
-
-        // =========================================================
-        //           BUSCADOR Y SELECCIÓN DE CLIENTES (PANEL 1)
-        // =========================================================
 
         protected void btnSearchClient_Click(object sender, EventArgs e)
         {
@@ -481,11 +434,9 @@ namespace hotel
 
             GridViewRow row = gvClients.SelectedRow;
 
-            // Asumimos que la primera columna es userID y la segunda es Name
             int userID = int.Parse(row.Cells[0].Text);
             string username = row.Cells[1].Text;
 
-            // Creamos objeto Client mínimamente con lo que sabemos
             Client client = new Client
             {
                 UserID = userID,
@@ -512,7 +463,7 @@ namespace hotel
                         if (result != null)
                         {
                             int clientID = Convert.ToInt32(result);
-                            LoadClientData(clientID); // carga panel cliente + reservas
+                            LoadClientData(clientID);
                         }
                         else
                         {
@@ -526,10 +477,6 @@ namespace hotel
                 LoadReservationsForClient(client.UserID);
             }
         }
-
-        // =========================================================
-        //                      RESERVAS - CRUD
-        // =========================================================
 
         private void LoadReservationsForClient(int userID)
         {
@@ -592,7 +539,6 @@ namespace hotel
                 return;
             }
 
-            // Intentar parsear las fechas
             if (!DateTime.TryParse(txtArrival.Text, out DateTime arrivalDate) ||
                 !DateTime.TryParse(txtDeparture.Text, out DateTime departureDate))
             {
@@ -600,14 +546,12 @@ namespace hotel
                 return;
             }
 
-            // arrival < departure
             if (arrivalDate >= departureDate)
             {
                 lblReservationMsg.Text = "Departure date must be after arrival date.";
                 return;
             }
 
-            // (Opcional) no permitir reservas en el pasado
             if (arrivalDate.Date < DateTime.Today)
             {
                 lblReservationMsg.Text = "Arrival date cannot be in the past.";
@@ -671,7 +615,6 @@ namespace hotel
 
             GridViewRow row = gvReservations.SelectedRow;
 
-            // Creamos también objeto Reservation (por estilo)
             Reservation res = new Reservation
             {
                 ReservationID = int.Parse(row.Cells[0].Text),
@@ -710,7 +653,6 @@ namespace hotel
                 return;
             }
 
-            // Intentar parsear las fechas
             if (!DateTime.TryParse(txtArrival.Text, out DateTime arrivalDate) ||
                 !DateTime.TryParse(txtDeparture.Text, out DateTime departureDate))
             {
@@ -718,14 +660,12 @@ namespace hotel
                 return;
             }
 
-            // arrival < departure
             if (arrivalDate >= departureDate)
             {
                 lblReservationMsg.Text = "Departure date must be after arrival date.";
                 return;
             }
 
-            // (Opcional) no permitir reservas en el pasado
             if (arrivalDate.Date < DateTime.Today)
             {
                 lblReservationMsg.Text = "Arrival date cannot be in the past.";
@@ -801,7 +741,6 @@ namespace hotel
             int userID = (int)ViewState["selectedUserID"];
             int reservationID = int.Parse(ViewState["reservationID"].ToString());
 
-            // También podemos crear un objeto Reservation por estilo
             Reservation res = new Reservation
             {
                 ReservationID = reservationID,
@@ -842,9 +781,6 @@ namespace hotel
             }
         }
 
-        // =========================================================
-        //                    HELPERS
-        // =========================================================
         private bool ClientExists(int clientID)
         {
             try
@@ -896,10 +832,10 @@ namespace hotel
             }
             catch
             {
-                // Puedes loguear si quieres
+                
             }
 
-            return -1; // valor "no encontrado / error"
+            return -1; 
         }
 
         private bool ClientHasReservations(int userID)
@@ -927,19 +863,11 @@ namespace hotel
             }
             catch
             {
-                // Si algo falla, mejor no borrar por si acaso
                 return true;
             }
 
             return false;
         }
-
-
-
-
-        // =========================================================
-        //                    LOGOUT
-        // =========================================================
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {
