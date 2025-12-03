@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -55,21 +55,63 @@ namespace hotel
         {
             lblClientMsg.Text = "";
 
-            if (!int.TryParse(txtClientID.Text, out int clientID))
+            // 1) Validar ClientID numérico y > 0
+            if (!int.TryParse(txtClientID.Text, out int clientID) || clientID <= 0)
             {
-                lblClientMsg.Text = "Enter a valid numeric Client ID.";
+                lblClientMsg.Text = "Enter a valid positive numeric Client ID.";
                 return;
             }
 
+            // 2) Validar campos obligatorios
+            if (string.IsNullOrWhiteSpace(txtName.Text) ||
+                string.IsNullOrWhiteSpace(txtDOB.Text) ||
+                string.IsNullOrWhiteSpace(txtAddress.Text) ||
+                string.IsNullOrWhiteSpace(txtMobile.Text))
+            {
+                lblClientMsg.Text = "All fields (Name, DOB, Address, Phone) are required.";
+                return;
+            }
+
+            // 3) Validar teléfono solo números y longitud razonable
+            string mobileRaw = txtMobile.Text.Trim();
+
+            if (!long.TryParse(mobileRaw, out _))
+            {
+                lblClientMsg.Text = "Phone must contain only numbers.";
+                return;
+            }
+
+            if (mobileRaw.Length < 7 || mobileRaw.Length > 15)
+            {
+                lblClientMsg.Text = "Phone length must be between 7 and 15 digits.";
+                return;
+            }
+
+            // 4) Validar que la fecha tenga formato correcto
+            if (!DateTime.TryParse(txtDOB.Text, out _))
+            {
+                lblClientMsg.Text = "Invalid date format for DOB.";
+                return;
+            }
+
+            // 5) Comprobar que NO exista ya un cliente con ese ClientID
+            if (ClientExists(clientID))
+            {
+                lblClientMsg.Text = "There is already a client with that Client ID.";
+                return;
+            }
+
+            // 6) Crear objeto Client con los datos del formulario
             Client client = new Client
             {
                 ClientID = clientID,
                 Name = txtName.Text.Trim(),
                 DOB = txtDOB.Text,
                 Address = txtAddress.Text.Trim(),
-                Mobile = txtMobile.Text.Trim()
+                Mobile = mobileRaw
             };
 
+            // 7) Sanitizar strings para el SQL
             string name = Escape(client.Name);
             string dob = Escape(client.DOB);
             string address = Escape(client.Address);
@@ -195,19 +237,60 @@ namespace hotel
         {
             lblClientMsg.Text = "";
 
-            if (!int.TryParse(txtClientID.Text, out int clientID))
+            // 1) Validar ClientID numérico y > 0
+            if (!int.TryParse(txtClientID.Text, out int clientID) || clientID <= 0)
             {
-                lblClientMsg.Text = "Enter the Client ID of the client to update.";
+                lblClientMsg.Text = "Enter a valid positive Client ID to update.";
                 return;
             }
 
+            // 2) Comprobar que el cliente EXISTE antes de actualizar
+            if (!ClientExists(clientID))
+            {
+                lblClientMsg.Text = "No client found with that ID. Cannot update.";
+                return;
+            }
+
+            // 3) Validar campos obligatorios
+            if (string.IsNullOrWhiteSpace(txtName.Text) ||
+                string.IsNullOrWhiteSpace(txtDOB.Text) ||
+                string.IsNullOrWhiteSpace(txtAddress.Text) ||
+                string.IsNullOrWhiteSpace(txtMobile.Text))
+            {
+                lblClientMsg.Text = "All fields (Name, DOB, Address, Phone) are required to update the client.";
+                return;
+            }
+
+            // 4) Validar teléfono
+            string mobileRaw = txtMobile.Text.Trim();
+
+            if (!long.TryParse(mobileRaw, out _))
+            {
+                lblClientMsg.Text = "Phone must contain only numbers.";
+                return;
+            }
+
+            if (mobileRaw.Length < 7 || mobileRaw.Length > 15)
+            {
+                lblClientMsg.Text = "Phone length must be between 7 and 15 digits.";
+                return;
+            }
+
+            // 5) Validar fecha
+            if (!DateTime.TryParse(txtDOB.Text, out _))
+            {
+                lblClientMsg.Text = "Invalid date format for DOB.";
+                return;
+            }
+
+            // 6) Crear objeto Client con los nuevos datos
             Client client = new Client
             {
                 ClientID = clientID,
                 Name = txtName.Text.Trim(),
                 DOB = txtDOB.Text,
                 Address = txtAddress.Text.Trim(),
-                Mobile = txtMobile.Text.Trim()
+                Mobile = mobileRaw
             };
 
             string name = Escape(client.Name);
@@ -234,9 +317,9 @@ namespace hotel
                         int rows = cmd.ExecuteNonQuery();
 
                         if (rows > 0)
-                            lblClientMsg.Text = $"Client updated ({rows} row/s).";
+                            lblClientMsg.Text = "Client updated successfully.";
                         else
-                            lblClientMsg.Text = "No client found with that ID (nothing updated).";
+                            lblClientMsg.Text = "No client was updated (unexpected).";
                     }
                 }
             }
@@ -246,37 +329,57 @@ namespace hotel
             }
         }
 
+
         protected void btnDeleteClient_Click(object sender, EventArgs e)
         {
             lblClientMsg.Text = "";
 
-            if (!int.TryParse(txtClientID.Text, out int clientID))
+            // 1) Validar ClientID
+            if (!int.TryParse(txtClientID.Text, out int clientID) || clientID <= 0)
             {
-                lblClientMsg.Text = "Enter the Client ID of the client you want to delete.";
+                lblClientMsg.Text = "Enter a valid positive Client ID to delete.";
                 return;
             }
 
-            // Creamos un objeto client solo con el ID (por estilo)
-            Client client = new Client
+            // 2) Comprobar que el cliente EXISTE
+            if (!ClientExists(clientID))
             {
-                ClientID = clientID
-            };
+                lblClientMsg.Text = "No client found with that ID. Nothing to delete.";
+                return;
+            }
 
+            // 3) Obtener su userID interno
+            int userID = GetUserIdByClientId(clientID);
+            if (userID <= 0)
+            {
+                lblClientMsg.Text = "Internal error: could not find internal user ID.";
+                return;
+            }
+
+            // 4) Comprobar si tiene reservas
+            if (ClientHasReservations(userID))
+            {
+                lblClientMsg.Text = "This client still has reservations. Delete their reservations first.";
+                return;
+            }
+
+            // 5) Borrar cliente
             try
             {
                 using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
                 {
                     conn.Open();
 
-                    string query = "DELETE FROM Users WHERE clientID = " + client.ClientID;
+                    string query = "DELETE FROM Users WHERE clientID = " + clientID;
 
                     using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
                     {
                         int rows = cmd.ExecuteNonQuery();
 
                         if (rows > 0)
-                        {                                                  
-                            lblClientMsg.Text = $"Client deleted ({rows} row/s).";
+                        {
+                            lblClientMsg.Text = "Client deleted successfully.";
+                            txtClientID.Text = "";
                             txtName.Text = "";
                             txtDOB.Text = "";
                             txtAddress.Text = "";
@@ -288,7 +391,7 @@ namespace hotel
                         }
                         else
                         {
-                            lblClientMsg.Text = "No client found with that ID (nothing deleted).";
+                            lblClientMsg.Text = "No client was deleted (unexpected).";
                         }
                     }
                 }
@@ -298,6 +401,7 @@ namespace hotel
                 lblClientMsg.Text = "Error deleting client: " + ex.Message;
             }
         }
+
 
         // =========================================================
         //           BUSCADOR Y SELECCIÓN DE CLIENTES (PANEL 1)
@@ -488,6 +592,29 @@ namespace hotel
                 return;
             }
 
+            // Intentar parsear las fechas
+            if (!DateTime.TryParse(txtArrival.Text, out DateTime arrivalDate) ||
+                !DateTime.TryParse(txtDeparture.Text, out DateTime departureDate))
+            {
+                lblReservationMsg.Text = "Invalid date format for arrival or departure.";
+                return;
+            }
+
+            // arrival < departure
+            if (arrivalDate >= departureDate)
+            {
+                lblReservationMsg.Text = "Departure date must be after arrival date.";
+                return;
+            }
+
+            // (Opcional) no permitir reservas en el pasado
+            if (arrivalDate.Date < DateTime.Today)
+            {
+                lblReservationMsg.Text = "Arrival date cannot be in the past.";
+                return;
+            }
+
+
             int userID = (int)ViewState["selectedUserID"];
 
             if (string.IsNullOrWhiteSpace(txtArrival.Text) ||
@@ -582,6 +709,29 @@ namespace hotel
                 lblReservationMsg.Text = "Select a reservation in the table to update.";
                 return;
             }
+
+            // Intentar parsear las fechas
+            if (!DateTime.TryParse(txtArrival.Text, out DateTime arrivalDate) ||
+                !DateTime.TryParse(txtDeparture.Text, out DateTime departureDate))
+            {
+                lblReservationMsg.Text = "Invalid date format for arrival or departure.";
+                return;
+            }
+
+            // arrival < departure
+            if (arrivalDate >= departureDate)
+            {
+                lblReservationMsg.Text = "Departure date must be after arrival date.";
+                return;
+            }
+
+            // (Opcional) no permitir reservas en el pasado
+            if (arrivalDate.Date < DateTime.Today)
+            {
+                lblReservationMsg.Text = "Arrival date cannot be in the past.";
+                return;
+            }
+
 
             int userID = (int)ViewState["selectedUserID"];
             int reservationID = int.Parse(ViewState["reservationID"].ToString());
@@ -691,6 +841,101 @@ namespace hotel
                 lblReservationMsg.Text = "Error deleting reservation.";
             }
         }
+
+        // =========================================================
+        //                    HELPERS
+        // =========================================================
+        private bool ClientExists(int clientID)
+        {
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
+                {
+                    conn.Open();
+
+                    string query = "SELECT COUNT(*) FROM Users WHERE clientID = " + clientID;
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                    {
+                        object result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            long count = Convert.ToInt64(result);
+                            return count > 0;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private int GetUserIdByClientId(int clientID)
+        {
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
+                {
+                    conn.Open();
+
+                    string query = "SELECT userID FROM Users WHERE clientID = " + clientID;
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                    {
+                        object result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            return Convert.ToInt32(result);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Puedes loguear si quieres
+            }
+
+            return -1; // valor "no encontrado / error"
+        }
+
+        private bool ClientHasReservations(int userID)
+        {
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
+                {
+                    conn.Open();
+
+                    string query =
+                        "SELECT COUNT(*) FROM Reservations " +
+                        "WHERE userID = " + userID;
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                    {
+                        object result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            long count = Convert.ToInt64(result);
+                            return count > 0;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Si algo falla, mejor no borrar por si acaso
+                return true;
+            }
+
+            return false;
+        }
+
+
+
 
         // =========================================================
         //                    LOGOUT

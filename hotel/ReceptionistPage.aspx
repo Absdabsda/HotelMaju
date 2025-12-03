@@ -68,7 +68,6 @@
                               OnSelectedIndexChanged="gvClients_SelectedIndexChanged">
 
                     <Columns>
-                        <asp:BoundField DataField="UserID" HeaderText="Internal ID" />
                         <asp:BoundField DataField="ClientID" HeaderText="Client ID" />
                         <asp:BoundField DataField="Name" HeaderText="Name" />
                         <asp:BoundField DataField="Mobile" HeaderText="Phone" />
