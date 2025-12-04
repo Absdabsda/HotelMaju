@@ -4,7 +4,7 @@
     MaintainScrollPositionOnPostBack="true" %>
 
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head runat="server">
     <title>Receptionist - Hotel Maju</title>
     <link href="Styles/Receptionist.css" rel="stylesheet" />
@@ -150,7 +150,7 @@
                         <label for="ddlRoomType">Room type</label>
                         <asp:DropDownList ID="ddlRoomType" runat="server">
                             <asp:ListItem>Individual</asp:ListItem>
-                            <asp:ListItem>Doble</asp:ListItem>
+                            <asp:ListItem>Double</asp:ListItem>
                             <asp:ListItem>Suite</asp:ListItem>
                         </asp:DropDownList>
                     </div>

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 using hotel.Models;
 
 namespace hotel
@@ -38,107 +40,112 @@ namespace hotel
         }
 
         protected void btnAddClient_Click(object sender, EventArgs e)
-        {
-            lblClientMsg.Text = "";
-
-            if (!int.TryParse(txtClientID.Text, out int clientID) || clientID <= 0)
             {
-                lblClientMsg.Text = "Enter a valid positive numeric Client ID.";
-                return;
-            }
+                lblClientMsg.Text = "";
 
-            if (string.IsNullOrWhiteSpace(txtName.Text) ||
-                string.IsNullOrWhiteSpace(txtDOB.Text) ||
-                string.IsNullOrWhiteSpace(txtAddress.Text) ||
-                string.IsNullOrWhiteSpace(txtMobile.Text))
-            {
-                lblClientMsg.Text = "All fields (Name, DOB, Address, Phone) are required.";
-                return;
-            }
+                string rawClientId = txtClientID.Text.Trim();
+                string nameRaw = txtName.Text.Trim();
+                string dobRaw = txtDOB.Text.Trim();
+                string addressRaw = txtAddress.Text.Trim();
+                string mobileRaw = txtMobile.Text.Trim();
 
-            string mobileRaw = txtMobile.Text.Trim();
-
-            if (!long.TryParse(mobileRaw, out _))
-            {
-                lblClientMsg.Text = "Phone must contain only numbers.";
-                return;
-            }
-
-            if (mobileRaw.Length < 7 || mobileRaw.Length > 15)
-            {
-                lblClientMsg.Text = "Phone length must be between 7 and 15 digits.";
-                return;
-            }
-
-            if (!DateTime.TryParse(txtDOB.Text, out _))
-            {
-                lblClientMsg.Text = "Invalid date format for DOB.";
-                return;
-            }
-
-            if (ClientExists(clientID))
-            {
-                lblClientMsg.Text = "There is already a client with that Client ID.";
-                return;
-            }
-
-            Client client = new Client
-            {
-                ClientID = clientID,
-                Name = txtName.Text.Trim(),
-                DOB = txtDOB.Text,
-                Address = txtAddress.Text.Trim(),
-                Mobile = mobileRaw
-            };
-
-            string name = Escape(client.Name);
-            string dob = Escape(client.DOB);
-            string address = Escape(client.Address);
-            string mobile = Escape(client.Mobile);
-
-            string initialPassword = client.ClientID.ToString();
-            string hashedPassword = hotel.Security.MD5Hash(initialPassword);
-
-            try
-            {
-                using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
+                if (!Regex.IsMatch(rawClientId, @"^[1-9]\d*$"))
                 {
-                    conn.Open();
-
-                    string query =
-                        "INSERT INTO Users (username, profile, password, DOB, address, mobile, clientID) VALUES (" +
-                        "'" + name + "', " +
-                        "'client', " +
-                        "'" + hashedPassword + "', " +
-                        "'" + dob + "', " +
-                        "'" + address + "', " +
-                        "'" + mobile + "', " +
-                        client.ClientID +
-                        ")";
-
-                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
+                    lblClientMsg.Text = "Enter a valid positive numeric Client ID.";
+                    return;
                 }
 
-                lblClientMsg.Text = "Client created successfully. Initial password = ClientID.";
-            }
-            catch (Exception ex)
-            {
-                lblClientMsg.Text = "Error creating client: " + ex.Message;
-            }
-        }
+                int clientID = int.Parse(rawClientId); 
 
-        protected void btnFindClient_Click(object sender, EventArgs e)
+                if (string.IsNullOrWhiteSpace(nameRaw) ||
+                    string.IsNullOrWhiteSpace(dobRaw) ||
+                    string.IsNullOrWhiteSpace(addressRaw) ||
+                    string.IsNullOrWhiteSpace(mobileRaw))
+                {
+                    lblClientMsg.Text = "All fields (Name, DOB, Address, Phone) are required.";
+                    return;
+                }
+
+                if (!Regex.IsMatch(mobileRaw, @"^\d{7,15}$"))
+                {
+                    lblClientMsg.Text = "Phone must contain only numbers and be 7 to 15 digits.";
+                    return;
+                }
+
+                if (!DateTime.TryParse(dobRaw, out _))
+                {
+                    lblClientMsg.Text = "Invalid date format for DOB.";
+                    return;
+                }
+
+                if (ClientExists(clientID))
+                {
+                    lblClientMsg.Text = "There is already a client with that Client ID.";
+                    return;
+                }
+
+                Client client = new Client
+                {
+                    ClientID = clientID,
+                    Name = nameRaw,
+                    DOB = dobRaw,
+                    Address = addressRaw,
+                    Mobile = mobileRaw
+                };
+
+                string name = Escape(client.Name);
+                string dob = Escape(client.DOB);
+                string address = Escape(client.Address);
+                string mobile = Escape(client.Mobile);
+
+                string initialPassword = client.ClientID.ToString();
+                string hashedPassword = hotel.Security.MD5Hash(initialPassword);
+
+                try
+                {
+                    using (SQLiteConnection conn = new SQLiteConnection(GetConnectionString()))
+                    {
+                        conn.Open();
+
+                        string query =
+                            "INSERT INTO Users (username, profile, password, DOB, address, mobile, clientID) VALUES (" +
+                            "'" + name + "', " +
+                            "'client', " +
+                            "'" + hashedPassword + "', " +
+                            "'" + dob + "', " +
+                            "'" + address + "', " +
+                            "'" + mobile + "', " +
+                            client.ClientID +
+                            ")";
+
+                        using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    lblClientMsg.Text = "Client created successfully. Initial password = ClientID.";
+                }
+                catch (Exception ex)
+                {
+                    lblClientMsg.Text = "Error creating client: " + ex.Message;
+                }
+            }
+
+
+    protected void btnFindClient_Click(object sender, EventArgs e)
         {
             lblClientMsg.Text = "";
 
-            if (!int.TryParse(txtClientID.Text, out int clientID))
+            string rawClientId = txtClientID.Text.Trim();
+
+            if (!Regex.IsMatch(rawClientId, @"^[1-9]\d*$"))
             {
-                lblClientMsg.Text = "Enter a valid Client ID to search.";
+                lblClientMsg.Text = "Enter a valid positive numeric Client ID to search.";
                 return;
             }
+
+            int clientID = int.Parse(rawClientId);
 
             LoadClientData(clientID);
         }
@@ -206,11 +213,19 @@ namespace hotel
         {
             lblClientMsg.Text = "";
 
-            if (!int.TryParse(txtClientID.Text, out int clientID) || clientID <= 0)
+            string rawClientId = txtClientID.Text.Trim();
+            string nameRaw = txtName.Text.Trim();
+            string dobRaw = txtDOB.Text.Trim();
+            string addressRaw = txtAddress.Text.Trim();
+            string mobileRaw = txtMobile.Text.Trim();
+
+            if (!Regex.IsMatch(rawClientId, @"^[1-9]\d*$"))
             {
                 lblClientMsg.Text = "Enter a valid positive Client ID to update.";
                 return;
             }
+
+            int clientID = int.Parse(rawClientId);
 
             if (!ClientExists(clientID))
             {
@@ -218,41 +233,34 @@ namespace hotel
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtName.Text) ||
-                string.IsNullOrWhiteSpace(txtDOB.Text) ||
-                string.IsNullOrWhiteSpace(txtAddress.Text) ||
-                string.IsNullOrWhiteSpace(txtMobile.Text))
+            if (string.IsNullOrWhiteSpace(nameRaw) ||
+                string.IsNullOrWhiteSpace(dobRaw) ||
+                string.IsNullOrWhiteSpace(addressRaw) ||
+                string.IsNullOrWhiteSpace(mobileRaw))
             {
                 lblClientMsg.Text = "All fields (Name, DOB, Address, Phone) are required to update the client.";
                 return;
             }
 
-            string mobileRaw = txtMobile.Text.Trim();
-
-            if (!long.TryParse(mobileRaw, out _))
+            if (!Regex.IsMatch(mobileRaw, @"^\d{7,15}$"))
             {
-                lblClientMsg.Text = "Phone must contain only numbers.";
+                lblClientMsg.Text = "Phone must contain only numbers and be 7 to 15 digits.";
                 return;
             }
 
-            if (mobileRaw.Length < 7 || mobileRaw.Length > 15)
-            {
-                lblClientMsg.Text = "Phone length must be between 7 and 15 digits.";
-                return;
-            }
-
-            if (!DateTime.TryParse(txtDOB.Text, out _))
+            if (!DateTime.TryParse(dobRaw, out _))
             {
                 lblClientMsg.Text = "Invalid date format for DOB.";
                 return;
             }
 
+
             Client client = new Client
             {
                 ClientID = clientID,
-                Name = txtName.Text.Trim(),
-                DOB = txtDOB.Text,
-                Address = txtAddress.Text.Trim(),
+                Name = nameRaw,
+                DOB = dobRaw,
+                Address = addressRaw,
                 Mobile = mobileRaw
             };
 
@@ -297,11 +305,15 @@ namespace hotel
         {
             lblClientMsg.Text = "";
 
-            if (!int.TryParse(txtClientID.Text, out int clientID) || clientID <= 0)
+            string rawClientId = txtClientID.Text.Trim();
+
+            if (!Regex.IsMatch(rawClientId, @"^[1-9]\d*$"))
             {
                 lblClientMsg.Text = "Enter a valid positive Client ID to delete.";
                 return;
             }
+
+            int clientID = int.Parse(rawClientId);
 
             if (!ClientExists(clientID))
             {
